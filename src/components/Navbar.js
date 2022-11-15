@@ -1,24 +1,30 @@
 import "./Navbar.css"
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {useContext} from "react";
+import TokenContext from "./TokenContext";
 
 
 const Navbar = (props) => {
-    const history = useHistory();
+    const navigate = useNavigate();
+    let {token, setToken}=useContext(TokenContext)
     return (
         <div className="navbar">
             <button onClick={() => {
-                history.push('/elections')
+                navigate('/elections')
             }}>Elections
             </button>
             <button onClick={() => {
-                history.push('/results')
+                navigate('/results')
             }}>Results
             </button>
             <button onClick={() => {
-                history.push('/profile')
+                navigate('/profile')
             }}>Profile
             </button>
-            <button>Logout</button>
+            <button onClick={() => {
+                setToken(null);
+            }}>Logout
+            </button>
         </div>
     )
 }
