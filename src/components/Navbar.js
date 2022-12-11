@@ -18,6 +18,10 @@ const Navbar = (props) => {
             }}>Results
             </button>
             <button onClick={() => {
+                navigate('/requests')
+            }}>Requests
+            </button>
+            <button onClick={() => {
                 navigate('/profile')
             }}>Profile
             </button>

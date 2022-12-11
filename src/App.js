@@ -9,6 +9,7 @@ import Elections from "./components/Elections";
 import Profile from "./components/Profile";
 import TokenContext from "./components/TokenContext";
 import Results from "./components/Results";
+import Requests from "./components/Requests";
 import VerifyAuth from "./components/VerifyAuth";
 
 
@@ -28,6 +29,7 @@ const App = (props) => {
                 <Route path="/elections" element={<VerifyAuth><Elections/></VerifyAuth>}/>
                 <Route path="/profile" element={<VerifyAuth><Profile/></VerifyAuth>}/>
                 <Route path="/results" element={<VerifyAuth><Results/></VerifyAuth>}/>
+                <Route path="/requests" element={<VerifyAuth><Requests/></VerifyAuth>}/>
                 <Route path="/home" element={<VerifyAuth><Home/></VerifyAuth>}/>
                 <Route path='/' element={<Home/>}/>
             </Routes>

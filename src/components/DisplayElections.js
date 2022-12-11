@@ -1,4 +1,4 @@
-import Table from "./Table";
+import ElectionsTable from "./electionsTable";
 
 const DisplayElections = (props) => {
     let elections = props;
@@ -10,17 +10,17 @@ const DisplayElections = (props) => {
             </h1>
         )
     }
+    {Object.keys(elections).forEach(key => {
+        tables.push(<div>
+            <h1>
+                {key}
+            </h1>
+            <ElectionsTable tableData={elections[key]}/>
+        </div>)
+    })
+    }
     return (
         <div>
-            {Object.keys(elections).forEach(key => {
-                tables.push(<div>
-                    <h1>
-                        {key}
-                    </h1>
-                    <Table tableData={elections[key]}/>
-                </div>)
-            })
-            }
             {tables}
         </div>
     )

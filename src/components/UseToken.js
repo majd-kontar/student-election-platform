@@ -3,19 +3,19 @@ import {createContext, useState} from 'react';
 
 const UseToken = () => {
     const getToken = () => {
-        const tokenString = localStorage.getItem('token');
-        const userToken = JSON.parse(tokenString);
-        return userToken?.token
+        const tokenString = localStorage.getItem('id');
+        return JSON.parse(tokenString)
+
     };
 
     const [token, setToken] = useState(getToken());
 
     const saveToken = userToken => {
         if (userToken == null) {
-            localStorage.removeItem('token');
+            localStorage.removeItem('id');
             setToken(null);
         } else {
-            localStorage.setItem('token', JSON.stringify(userToken));
+            localStorage.setItem('id', JSON.stringify(userToken));
             setToken(JSON.stringify(userToken))
         }
     };

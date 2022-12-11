@@ -33,7 +33,7 @@ const Login = (props) => {
             if (data['ERROR']) {
                 setMessage(data['ERROR']);
             } else {
-                setToken(response.data.token)
+                setToken(response.data.id)
                 console.log(response);
                 navigate('/home')
             }
@@ -55,7 +55,7 @@ const Login = (props) => {
                 if (data['ERROR']) {
                     setMessage(data['ERROR']);
                 } else {
-                    setToken(response.data.token)
+                    setToken(response.data.id)
                     console.log(response);
                     navigate('/profile')
                 }
