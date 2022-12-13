@@ -1,13 +1,14 @@
-import React, {useContext, useState} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import "./Login.css"
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
-import TokenContext from "./TokenContext";
+import {useCookies} from "react-cookie";
+import {signin, signup} from "../requests/profile";
 
 
 const Login = (props) => {
+    const [cookies, setCookie] = useCookies(["access-token"]);
     const navigate = useNavigate()
-    let {token, setToken} = useContext(TokenContext)
     let [message, setMessage] = useState('')
     let passwordMessage = 'Passwords don\'t match'
     let [authMode, setAuthMode] = useState("signin")
@@ -19,49 +20,54 @@ const Login = (props) => {
     let [username, setUsername] = useState('')
 
 
+    useEffect(() => {
+        setMessage('')
+    }, [authMode])
+
     const changeAuthMode = () => {
         setAuthMode(authMode === "signin" ? "signup" : "signin")
     }
 
     const handleSignIn = e => {
         e.preventDefault();
-        axios.post('http://localhost:3002/login', {
-            username: username,
-            password: password
-        }).then((response) => {
-            const data = response.data
-            if (data['ERROR']) {
-                setMessage(data['ERROR']);
-            } else {
-                setToken(response.data.id)
-                console.log(response);
-                navigate('/home')
-            }
-        }).catch(error => {
-            console.log(error)
-        });
+        if (username.length > 0 && password.length > 0) {
+            signin(username, password).then((response) => {
+                    setCookie("access-token", response.headers.get("access-token"), {
+                        maxAge: 2592000
+                    });
+                    console.log(response);
+                    navigate('/home')
+                }
+            ).catch(error => {
+                try {
+                    console.log(error)
+                    setMessage(error.response.data['Error'])
+                } catch {
+                    setMessage(error.message)
+                }
+
+            });
+        } else {
+            setMessage("Please fill all the fields!")
+        }
     }
     const handleSignUp = e => {
         e.preventDefault();
-        if (password === confirmPassword) {
-            axios.put('http://localhost:3002/register', {
-                firstName: firstName,
-                lastName: lastName,
-                username: username,
-                studentEmail: studentEmail,
-                studentPassword: password,
-            }).then((response) => {
+        if (firstName.length > 0 && lastName.length > 0 && username.length > 0 && studentEmail.length > 0 && password.length > 8 && confirmPassword === password) {
+            signup(firstName, lastName, username, studentEmail, password).then((response) => {
                 const data = response.data
-                if (data['ERROR']) {
-                    setMessage(data['ERROR']);
-                } else {
-                    setToken(response.data.id)
-                    console.log(response);
-                    navigate('/profile')
-                }
+                console.log(data);
+                navigate('/login')
             }).catch(error => {
-                console.log(error)
+                try {
+                    console.log(error.response.data['Error'])
+                    setMessage(error.response.data['Error'])
+                } catch {
+                    setMessage(error.message)
+                }
             });
+        } else {
+            setMessage("Please fill all the fields!")
         }
     }
 
@@ -192,12 +198,15 @@ const Login = (props) => {
                             type="password"
                             className="form-control mt-1"
                             placeholder="Enter password"
+                            minLength="8"
                             required={true}
                             onChange={e => {
                                 setPassword(e.target.value)
                             }}
                             value={password}
                         />
+                        {(password.length < 8 && password.length > 0) ?
+                            <span style={{color: 'red'}}>Password is too short</span> : <span/>}
                     </div>
                     <div className="form-group mt-3">
                         <label>Confirm Password</label>

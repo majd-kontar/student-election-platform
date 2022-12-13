@@ -1,15 +1,17 @@
-import Navbar from "./Navbar";
-import VerifyAuth from "./VerifyAuth";
+import Navbar from "../components/Navbar";
+import {useEffect, useState} from "react";
 import axios from "axios";
-import {useContext, useEffect, useState} from "react";
-import TokenContext from "./TokenContext";
-import DisplayElections from "./DisplayElections";
+import GenerateElectionsTable from "../components/GenerateElectionsTable";
+import {useCookies} from "react-cookie";
+import {retrieveElections} from "../requests/elections";
 
-const Elections = (props) => {
+
+const Home = (props) => {
+    const [cookies, setCookie] = useCookies(["access-token"]);
     const [admin, setAdmin] = useState(false);
     const [elections, setElections] = useState([]);
     const getElections = async () => {
-        axios.get('http://localhost:3002/get_elections', {}).then((response) => {
+        retrieveElections(cookies).then((response) => {
             const data = response.data
             if (data['ERROR']) {
                 console.log(data['ERROR']);
@@ -23,17 +25,18 @@ const Elections = (props) => {
             setElections([{'ERROR': 'Error'}]);
         });
     }
-    useEffect(() => {
+    useEffect( () => {
         getElections();
     }, [])
     return (
         <div>
             <Navbar/>
             <div>
-                {DisplayElections(elections)}
+                {GenerateElectionsTable(elections)}
             </div>
         </div>
 
     )
 }
-export default Elections;
+
+export default Home

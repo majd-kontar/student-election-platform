@@ -1,5 +1,4 @@
-import Navbar from "./Navbar";
-import VerifyAuth from "./VerifyAuth";
+import Navbar from "../components/Navbar";
 
 const Results = (props) => {
     return (

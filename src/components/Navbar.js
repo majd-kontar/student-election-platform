@@ -1,12 +1,12 @@
 import "./Navbar.css"
 import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
-import TokenContext from "./TokenContext";
+import {useCookies} from "react-cookie";
 
 
 const Navbar = (props) => {
+    const [cookies, setCookie,removeCookie] = useCookies(["access-token"]);
     const navigate = useNavigate();
-    let {token, setToken}=useContext(TokenContext)
     return (
         <div className="navbar">
             <button onClick={() => {
@@ -26,7 +26,8 @@ const Navbar = (props) => {
             }}>Profile
             </button>
             <button onClick={() => {
-                setToken(null);
+                removeCookie('access-token');
+                navigate('/')
             }}>Logout
             </button>
         </div>

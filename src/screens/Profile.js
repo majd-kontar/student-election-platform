@@ -1,12 +1,14 @@
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
 import axios from "axios";
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import VerifyAuth from "./VerifyAuth";
-import GenerateOptions from "./GenerateOptions";
+import OptionGenerator from "../components/OptionGenerator";
+import {getProfile, updateProfile} from "../requests/profile";
+import {useCookies} from "react-cookie";
 
 const Profile = (props) => {
     const navigate = useNavigate()
+    const [cookies, setCookie] = useCookies(["access-token"]);
     let [message, setMessage] = useState('')
     let [password, setPassword] = useState('')
     let [school, setSchool] = useState('')
@@ -25,7 +27,7 @@ const Profile = (props) => {
     let standings = ['1', '2', '3', '4', '5+']
     let campuses = ['Beirut', 'Byblos']
     const getProfileData = () => {
-        axios.get('http://localhost:3002/get_profile', {}).then((response) => {
+        getProfile(cookies).then((response) => {
             const data = response.data
             if (data['ERROR']) {
                 setMessage(data['ERROR']);
@@ -45,16 +47,7 @@ const Profile = (props) => {
 
     const handleUpdateProfile = e => {
         e.preventDefault();
-        axios.put('http://localhost:3002/update_profile', {
-            school: school,
-            major: major,
-            cls: cls,
-            campus: campus,
-            address: address,
-            phoneNb: phoneNb,
-            studentPassword: password,
-            studentRecoveryEmail: studentRecoveryEmail
-        }).then((response) => {
+        updateProfile(school, major, cls, campus, address, phoneNb, password, studentRecoveryEmail,cookies).then((response) => {
             const data = response.data
             if (data['ERROR']) {
                 setMessage(data['ERROR']);
@@ -70,7 +63,6 @@ const Profile = (props) => {
     getProfileData()
     return (
         <div>
-            <VerifyAuth/>
             <Navbar/>
             <div className="Auth-form-container">
                 <form className="Auth-form">
@@ -87,7 +79,7 @@ const Profile = (props) => {
                                 }}
                                 value={school}
                             >
-                                {GenerateOptions(schools)}
+                                {OptionGenerator(schools)}
                             </select>
                         </div>
                         <div className="form-group mt-3">
@@ -100,7 +92,7 @@ const Profile = (props) => {
                                 }}
                                 value={major}
                             >
-                                {GenerateOptions(majors)}
+                                {OptionGenerator(majors)}
                             </select>
                         </div>
                         <div className="form-group mt-3">
@@ -113,7 +105,7 @@ const Profile = (props) => {
                                 }}
                                 value={cls}
                             >
-                                {GenerateOptions(standings)}
+                                {OptionGenerator(standings)}
                             </select>
                         </div>
                         <div className="form-group mt-3">
@@ -126,7 +118,7 @@ const Profile = (props) => {
                                 }}
                                 value={campus}
                             >
-                                {GenerateOptions(campuses)}
+                                {OptionGenerator(campuses)}
                             </select>
                         </div>
                         <div className="form-group mt-3">

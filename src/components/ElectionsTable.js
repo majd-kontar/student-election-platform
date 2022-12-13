@@ -1,4 +1,4 @@
-import Form from "./Form";
+import Requests from "./Requests";
 import React from 'react'
 
 
@@ -36,10 +36,10 @@ const ElectionsTable = (props) => {
                         </td>
                     ))}
                     <td>
-                        <Form type='vote' electionID={values[indexOfElectionID]}/>
+                        <Requests type='vote' electionID={values[indexOfElectionID]}/>
                     </td>
                     <td>
-                        <Form type='register' electionID={values[indexOfElectionID]}/>
+                        <Requests type='register' electionID={values[indexOfElectionID]}/>
                     </td>
                 </tr>
             ))}

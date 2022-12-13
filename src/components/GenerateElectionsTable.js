@@ -1,6 +1,6 @@
-import ElectionsTable from "./electionsTable";
+import ElectionsTable from "./ElectionsTable";
 
-const DisplayElections = (props) => {
+const GenerateElectionsTable = (props) => {
     let elections = props;
     let tables = []
     if ('ERROR' in elections) {
@@ -25,4 +25,4 @@ const DisplayElections = (props) => {
         </div>
     )
 }
-export default DisplayElections;
+export default GenerateElectionsTable;

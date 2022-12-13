@@ -1,10 +1,10 @@
-import Form from "./Form";
 import axios from "axios";
-import {useState} from "react";
-import Requests from "./Requests";
-import {useNavigate} from "react-router-dom";
+import {acceptRequest, rejectRequest} from "../requests/requests";
+import {useCookies} from "react-cookie";
+
 
 const RequestsTable = (props) => {
+    const [cookies, setCookie] = useCookies(["access-token"]);
     let tableData = props['tableData'];
     let headers = [];
     let data = [];
@@ -21,7 +21,7 @@ const RequestsTable = (props) => {
     // tableData.forEach((value) => {
     //     data.push(Object.values(value))
     const handleApprove = async (formId) => {
-        axios.get('http://localhost:3002/accept_form/', {params: {formId: formId}}).then((response) => {
+        acceptRequest(formId, cookies).then((response) => {
             const data = response.data
             if (data['ERROR']) {
                 console.log(data['ERROR']);
@@ -36,7 +36,7 @@ const RequestsTable = (props) => {
         });
     }
     const handleReject = async (formId) => {
-        axios.get('http://localhost:3002/reject_form', {params: {formId: formId}}).then((response) => {
+        rejectRequest(formId, cookies).then((response) => {
             const data = response.data
             if (data['ERROR']) {
                 console.log(data['ERROR']);
