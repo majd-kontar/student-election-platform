@@ -1,24 +1,28 @@
-import React, {useState} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import "./Login.css"
 import axios from 'axios';
+import {useNavigate} from "react-router-dom";
+import {useCookies} from "react-cookie";
+import {signin, signup} from "../requests/profile";
 
 
 const Login = (props) => {
+    const [cookies, setCookie] = useCookies(["access-token"]);
+    const navigate = useNavigate()
     let [message, setMessage] = useState('')
+    let passwordMessage = 'Passwords don\'t match'
     let [authMode, setAuthMode] = useState("signin")
     let [password, setPassword] = useState('')
+    let [confirmPassword, setConfirmPassword] = useState('')
     let [firstName, setFirstName] = useState('')
     let [lastName, setLastName] = useState('')
-    let [school, setSchool] = useState('')
-    let [major, setMajor] = useState('')
-    let [cls, setCls] = useState('')
-    let [campus, setCampus] = useState('')
-    let [address, setAddress] = useState('')
-    let [phoneNb, setPhoneNb] = useState('')
     let [studentEmail, setStudentEmail] = useState('')
     let [username, setUsername] = useState('')
-    let [studentRecoveryEmail, setStudentRecoveryEmail] = useState('')
 
+
+    useEffect(() => {
+        setMessage('')
+    }, [authMode])
 
     const changeAuthMode = () => {
         setAuthMode(authMode === "signin" ? "signup" : "signin")
@@ -26,38 +30,45 @@ const Login = (props) => {
 
     const handleSignIn = e => {
         e.preventDefault();
-        axios.post('http://localhost:3002/login', {
-            username: username,
-            password: password
-        }).then((response) => {
-            console.log(response);
-        }).catch(error => {
-            console.log(error)
-        });
+        if (username.length > 0 && password.length > 0) {
+            signin(username, password).then((response) => {
+                    setCookie("access-token", response.headers.get("access-token"), {
+                        maxAge: 2592000
+                    });
+                    console.log(response);
+                    navigate('/home')
+                }
+            ).catch(error => {
+                try {
+                    console.log(error)
+                    setMessage(error.response.data['Error'])
+                } catch {
+                    setMessage(error.message)
+                }
+
+            });
+        } else {
+            setMessage("Please fill all the fields!")
+        }
     }
     const handleSignUp = e => {
         e.preventDefault();
-        axios.put('http://localhost:3002/register', {
-            firstName: firstName,
-            lastName: lastName,
-            school: school,
-            major: major,
-            cls: cls,
-            campus: campus,
-            address: address,
-            phoneNb: phoneNb,
-            username: username,
-            studentEmail: studentEmail,
-            studentPassword: password,
-            studentRecoveryEmail: studentRecoveryEmail
-        }).then((response) => {
-            const data = response.data
-            if (data['ERROR']) {
-                setMessage(data['ERROR']);
-            }
-        }).catch(error => {
-            console.log(error)
-        });
+        if (firstName.length > 0 && lastName.length > 0 && username.length > 0 && studentEmail.length > 0 && password.length > 8 && confirmPassword === password) {
+            signup(firstName, lastName, username, studentEmail, password).then((response) => {
+                const data = response.data
+                console.log(data);
+                navigate('/login')
+            }).catch(error => {
+                try {
+                    console.log(error.response.data['Error'])
+                    setMessage(error.response.data['Error'])
+                } catch {
+                    setMessage(error.message)
+                }
+            });
+        } else {
+            setMessage("Please fill all the fields!")
+        }
     }
 
 
@@ -73,6 +84,7 @@ const Login = (props) => {
                 Sign Up
               </span>
                         </div>
+                        <span style={{color: 'red'}}>{message}</span>
                         <div className="form-group mt-3">
                             <label>Username</label>
                             <input
@@ -119,7 +131,7 @@ const Login = (props) => {
         <div className="Auth-form-container">
             <form className="Auth-form">
                 <div className="Auth-form-content">
-                    <h3 className="Auth-form-title">Sign In</h3>
+                    <h3 className="Auth-form-title">Sign Up</h3>
                     <div className="text-center">
                         Already registered?{" "}
                         <span className="link-primary" onClick={changeAuthMode}>
@@ -155,84 +167,6 @@ const Login = (props) => {
                         />
                     </div>
                     <div className="form-group mt-3">
-                        <label>School</label>
-                        <input
-                            type="text"
-                            className="form-control mt-1"
-                            placeholder="e.g ECE"
-                            required={true}
-                            onChange={e => {
-                                setSchool(e.target.value)
-                            }}
-                            value={school}
-                        />
-                    </div>
-                    <div className="form-group mt-3">
-                        <label>Major</label>
-                        <input
-                            type="text"
-                            className="form-control mt-1"
-                            placeholder="e.g Mechatronics"
-                            required={true}
-                            onChange={e => {
-                                setMajor(e.target.value)
-                            }}
-                            value={major}
-                        />
-                    </div>
-                    <div className="form-group mt-3">
-                        <label>Standing</label>
-                        <input
-                            type="text"
-                            className="form-control mt-1"
-                            placeholder="e.g 5"
-                            required={true}
-                            onChange={e => {
-                                setCls(e.target.value)
-                            }}
-                            value={cls}
-                        />
-                    </div>
-                    <div className="form-group mt-3">
-                        <label>Campus</label>
-                        <input
-                            type="text"
-                            className="form-control mt-1"
-                            placeholder="e.g Byblos"
-                            required={true}
-                            onChange={e => {
-                                setCampus(e.target.value)
-                            }}
-                            value={campus}
-                        />
-                    </div>
-                    <div className="form-group mt-3">
-                        <label>Address</label>
-                        <input
-                            type="text"
-                            className="form-control mt-1"
-                            placeholder="e.g Aley, Lebanon"
-                            required={true}
-                            onChange={e => {
-                                setAddress(e.target.value)
-                            }}
-                            value={address}
-                        />
-                    </div>
-                    <div className="form-group mt-3">
-                        <label>Phone Number</label>
-                        <input
-                            type="text"
-                            className="form-control mt-1"
-                            placeholder="e.g 71705620"
-                            required={true}
-                            onChange={e => {
-                                setPhoneNb(e.target.value)
-                            }}
-                            value={phoneNb}
-                        />
-                    </div>
-                    <div className="form-group mt-3">
                         <label>Email</label>
                         <input
                             type="email"
@@ -246,7 +180,7 @@ const Login = (props) => {
                         />
                     </div>
                     <div className="form-group mt-3">
-                        <label>'Username'</label>
+                        <label>Username</label>
                         <input
                             type="text"
                             className="form-control mt-1"
@@ -264,25 +198,30 @@ const Login = (props) => {
                             type="password"
                             className="form-control mt-1"
                             placeholder="Enter password"
+                            minLength="8"
                             required={true}
                             onChange={e => {
                                 setPassword(e.target.value)
                             }}
                             value={password}
                         />
+                        {(password.length < 8 && password.length > 0) ?
+                            <span style={{color: 'red'}}>Password is too short</span> : <span/>}
                     </div>
                     <div className="form-group mt-3">
-                        <label>Recovery Email</label>
+                        <label>Confirm Password</label>
                         <input
-                            type="email"
+                            type="password"
                             className="form-control mt-1"
-                            placeholder="e.g majdkontar@gmail.com"
+                            placeholder="Re-write password"
                             required={true}
                             onChange={e => {
-                                setStudentRecoveryEmail(e.target.value)
+                                setConfirmPassword(e.target.value)
                             }}
-                            value={studentRecoveryEmail}
+                            value={confirmPassword}
                         />
+                        {(password !== confirmPassword && password !== '') ?
+                            <span style={{color: 'red'}}>{passwordMessage}</span> : <span/>}
                     </div>
                     <div className="d-grid gap-2 mt-3">
                         <button type="submit" className="btn btn-primary" onClick={handleSignUp}>
@@ -297,6 +236,5 @@ const Login = (props) => {
         </div>
     )
 }
-
 
 export default Login

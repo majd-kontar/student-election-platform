@@ -12,11 +12,10 @@
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
-    "dotenv": "^16.0.3",
     "express-validator": "^6.14.2",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
-    "nodemon": "^2.0.20"
+    "react-cookie": "^4.1.1"
   }
 }

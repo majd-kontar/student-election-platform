@@ -8,11 +8,14 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.1.3",
     "bootstrap": "^5.2.2",
-    "express": "^4.18.2",
-    "mysql2": "^2.3.3",
     "react": "^18.2.0",
+    "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
+    "react-modal": "^3.16.1",
+    "react-popup": "^0.11.0",
     "react-scripts": "5.0.1",
+    "react-sortable-table": "^1.4.0",
+    "reactjs-popup": "^2.0.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -41,6 +44,7 @@
   },
   "devDependencies": {
     "cors": "^2.8.5",
-    "react-router-dom": "^6.4.2"
+    "express": "^4.18.2",
+    "react-router-dom": "^6.3.0"
   }
 }

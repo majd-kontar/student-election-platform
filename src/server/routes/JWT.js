@@ -15,11 +15,10 @@ const createJWT = (id) => {
 
 //middleware to verify the user token
 const autheticateJWT = (req, res, next) => {
-    const accessToken = req.cookies["access-token"]; 
-    
+    const accessToken = req.query.cookies['access-token'];
     //check if user logged in by checking access token 
     if (!accessToken)
-        return res.status(401).json({ERROR: "User Not Authenticated!"}); 
+        return res.status(401).json({Error: "User Not Authenticated!"});
     
     //validate token if it exists. 
     try {
@@ -29,7 +28,7 @@ const autheticateJWT = (req, res, next) => {
             return next(); 
         }
     }catch(err) {
-        return res.status(400).json({'ERROR': "JWT not valid"}); 
+        return res.status(400).json({'Error': "JWT not valid"});
     }
 }
 
