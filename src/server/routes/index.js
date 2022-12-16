@@ -121,9 +121,7 @@ app.patch('/updateProfile', [
     });
 app.post('/admin_set_password', (req, res) => {
     const username = req.body.username; 
-    const password = req.body.username; 
-    console.log(username)
-    
+    const password = req.body.password; 
 
     const hashed_password = bcrypt.hash(password, 8).then((hashed_password =>{
         db.query("UPDATE admin SET adminPassword=? WHERE adminUsername=?" , [hashed_password, username] ,(err,result) =>{
@@ -131,7 +129,7 @@ app.post('/admin_set_password', (req, res) => {
                 console.log(err); 
                 return res.status(400).json({'Error': err}); 
             }
-            console.log(result);
+            console.log(hashed_password);
             message = "Password updated successfully!"; 
             res.status(200).json({'Message': message}); 
     
@@ -139,24 +137,24 @@ app.post('/admin_set_password', (req, res) => {
     }));
   
 })
+
 app.get('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     //login will be based on username
     db.query("SELECT * FROM student WHERE studentUsername=?", [username], (err, result) => {
         if (result.length == 0) {
-            db.query("SELECT * FROM admin WHERE adminUsername=?", [username], (err, result) =>{
-                if (result.length > 0){
-
-                    const db_user = JSON.parse(JSON.stringify(result[0]));
-
+            db.query("SELECT * FROM admin WHERE adminUsername=?", [username], (err, result1) =>{
+                if (result1.length > 0){
+                    console.log(result1)
+                    const db_user = JSON.parse(JSON.stringify(result1[0]));
+                   
                     const db_pass = db_user.adminPassword;
                     const adId = db_user.adminUsername;
-
                     //check if user inputted password matches saved password
                     bcrypt.compare(password, db_pass).then((match) => {
+                        
                         if (!match) {
-                            console.log(db_pass, password)
                             message = "Invalid Credentials."
                             res.status(403).json({'Error': message});
                         } else {
@@ -172,11 +170,12 @@ app.get('/login', (req, res) => {
                 res.status(404).json({'Error': message});
                 return ('/login') 
                 } })
-        }else{
+        }else if (result.length >0) {
+            
             const db_user = JSON.parse(JSON.stringify(result[0]));
             
-            const db_pass = db_user.password;
-            const stdId = db_user.username;
+            const db_pass = db_user.studentPassword;
+            const stdId = db_user.studentUsername;
     
             //check if user inputted password matches saved password
             bcrypt.compare(password, db_pass).then((match) => {
@@ -203,48 +202,6 @@ app.get('/login', (req, res) => {
         }});
     });
         
-app.get('/admin-login', (req, res) => {
-    const username = req.body.adminUsername;
-    const password = req.body.adminPassword;
-    
-    //login will be based on username
-    db.query("SELECT * FROM admin WHERE adminUsername=?", [username], (err, result) => {
-
-        if (result.length == 0) {
-            message = "Oops! Not an Admin";
-            res.status(404).json({'Error': message});
-            return ('/login')
-        }
-
-        const db_user = JSON.parse(JSON.stringify(result[0]));
-
-        const db_pass = db_user.adminPassword;
-        const aId = db_user.adminUsername
-        //check is user inputted password matches saved password
-        bcrypt.compare(password,db_pass).then((match) => {
-            console.log(match)
-            if (!match) {
-                message = "Invalid Credentials."
-                res.status(403).json({'Error': message});
-            } else {
-                //if they match, create and send JWT
-                accessToken = createJWT(aId,true);
-                message = "Successfully Logged In!";
-                res.writeHead(200, {"access-token": accessToken});
-                res.end(message);
-                // res.cookie("access-token", accessToken, {
-                //     maxAge: 2592000,
-                //     httpOnly: true
-                // });
-
-                message = "Successfully Logged In!";
-                res.redirect('/profile');
-            }
-
-        });
-    })
-});
-
 app.get('/profile', autheticateJWT, (req, res) => {
     const studentId = req.body.studentId;
     console.log(studentId)
