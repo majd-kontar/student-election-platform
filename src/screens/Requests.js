@@ -32,9 +32,9 @@ const Requests = (props) => {
         return (
             <div>
                 <Navbar/>
-                <h2>
+                <h1 className='Error'>
                     An Error Occurred!
-                </h2>
+                </h1>
             </div>
         )
     } else {

@@ -174,7 +174,7 @@ const Profile = (props) => {
                             />
                         </div>
                         <div className="d-grid gap-2 mt-3">
-                            <button type="submit" className="btn btn-primary" onClick={handleUpdateProfile}>
+                            <button type="submit" className='submitButton' onClick={handleUpdateProfile}>
                                 Update
                             </button>
                         </div>

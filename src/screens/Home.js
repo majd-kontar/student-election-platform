@@ -22,10 +22,11 @@ const Home = (props) => {
             }
         }).catch(error => {
             console.log(error)
+            console.log(typeof elections)
             setElections([{'ERROR': 'Error'}]);
         });
     }
-    useEffect( () => {
+    useEffect(() => {
         getElections();
     }, [])
     return (

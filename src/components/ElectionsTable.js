@@ -1,5 +1,6 @@
 import Requests from "./Requests";
 import React from 'react'
+import "./Tables.css"
 
 
 const ElectionsTable = (props) => {
@@ -26,6 +27,12 @@ const ElectionsTable = (props) => {
                         {header}
                     </th>
                 ))}
+                <th>
+                    Vote
+                </th>
+                <th>
+                    Register
+                </th>
             </tr>
             </thead>
             <tbody>{data.map((values) => (
