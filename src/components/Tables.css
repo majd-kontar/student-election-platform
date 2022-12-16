@@ -36,7 +36,7 @@ table thead tr {
 }
 
 .table tbody tr:nth-of-type(even) {
-    background-color: lightgreen;
+    background-color: #d9ffd9;
 }
 
 .table tbody tr:last-of-type {

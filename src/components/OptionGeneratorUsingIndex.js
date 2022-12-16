@@ -4,7 +4,7 @@ const OptionGenerator = (props) => {
     let opts = props.options
     return (
         opts.map((option) => (
-            <option value={option}>
+            <option value={opts.indexOf(option)}>
                 {option}
             </option>
         )))

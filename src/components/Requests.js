@@ -5,6 +5,7 @@ import "./Request.css"
 import axios from "axios";
 import {useCookies} from "react-cookie";
 import {retrieveCandidates, retrieveElections, submitCandidateForm, submitVoteForm} from "../requests/elections";
+import OptionGenerator from "./OptionGenerator";
 
 
 const Requests = (props) => {
@@ -18,7 +19,9 @@ const Requests = (props) => {
     let [vote, setVote] = useState('')
     let [data, setData] = useState([])
     let candi = []
+    const clubPositions = ['President', 'Vice President', 'Treasurer', 'Secretary']
     const [modalIsOpen, setIsOpen] = React.useState(false);
+
 
     const getCandidates = async (electionID) => {
         retrieveCandidates(electionID, cookies).then((response) => {
@@ -38,7 +41,9 @@ const Requests = (props) => {
         });
     }
     const openModal = () => {
-        getCandidates(props.electionID);
+        if (props.type === 'vote') {
+            getCandidates(props.electionID);
+        }
         setIsOpen(true);
     }
 
@@ -95,11 +100,7 @@ const Requests = (props) => {
                             value={vote}
                         >
                             <option value="">Choose an option</option>
-                            {candidates.map((candidate) => (
-                                <option value={candidates.indexOf(candidate)}>
-                                    {candidate}
-                                </option>
-                            ))};
+                            <OptionGenerator options={candidates}/>
                         </select>
                         <label>
                             Program
@@ -109,7 +110,7 @@ const Requests = (props) => {
                         </p>
                     </div>
                     <div className="d-grid gap-2 mt-3">
-                        <button type="button" className="btn btn-primary" onClick={() => {
+                        <button type="button" className="submitButton" onClick={() => {
                             handleSubmit(props.electionID)
                         }}>
                             Submit
@@ -123,17 +124,23 @@ const Requests = (props) => {
                 <span style={{color: 'red'}}>{message}</span>
                 <form>
                     <div className="form-group mt-3">
-                        <label>Position</label>
-                        <input
-                            type="text"
-                            className="form-control mt-1"
-                            placeholder="Enter Position"
-                            required={true}
-                            onChange={e => {
-                                setPosition(e.target.value)
-                            }}
-                            value={position}
-                        />
+                        {props.electionType === 'Clubs' ?
+                            <div>
+                                <label>Position</label>
+                                <select
+                                    className="form-control mt-1"
+                                    required={true}
+                                    onChange={e => {
+                                        setPosition(e.target.value)
+                                    }}
+                                    value={position}
+                                >
+                                    <option value="">Choose an option</option>
+                                    <OptionGenerator options={clubPositions}/>
+                                </select>
+                            </div> :
+                            undefined
+                        }
                     </div>
                     <div className="form-group mt-3">
                         <label>Program</label>
@@ -149,7 +156,7 @@ const Requests = (props) => {
                         />
                     </div>
                     <div className="d-grid gap-2 mt-3">
-                        <button type="button" className="btn btn-primary" onClick={handleSubmit}>
+                        <button type="button" className="submitButton" onClick={handleSubmit}>
                             Submit
                         </button>
                     </div>
@@ -159,18 +166,20 @@ const Requests = (props) => {
     }, [candidates, vote])
 
 
-    return (<div>
-        <button onClick={openModal}>{label}</button>
-        <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={closeModal}
-            contentLabel="Example Modal"
-        >
-            {popup}
-            <div className="d-grid gap-2 mt-3">
-                <button className="btn btn-primary" onClick={closeModal}>close</button>
-            </div>
-        </Modal>
-    </div>)
+    return (
+        <div>
+            <button onClick={openModal}>{label}</button>
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="Example Modal"
+            >
+                {popup}
+                <div className="d-grid gap-2 mt-3">
+                    <button className="submitButton" onClick={closeModal}>close</button>
+                </div>
+            </Modal>
+        </div>
+    )
 }
 export default Requests;

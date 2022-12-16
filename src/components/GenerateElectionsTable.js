@@ -15,7 +15,7 @@ const GenerateElectionsTable = (props) => {
                         <h1>
                             {key}
                         </h1>
-                        <ElectionsTable tableData={elections[key]}/>
+                        <ElectionsTable type={key} tableData={elections[key]}/>
                     </div>)
             }
         )

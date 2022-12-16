@@ -5,6 +5,7 @@ import "./Tables.css"
 
 const ElectionsTable = (props) => {
     let tableData = props['tableData'];
+    let type = props['type'];
     let headers = [];
     let data = [];
     let electionID = '';
@@ -43,10 +44,10 @@ const ElectionsTable = (props) => {
                         </td>
                     ))}
                     <td>
-                        <Requests type='vote' electionID={values[indexOfElectionID]}/>
+                        <Requests type='vote' electionType={type} electionID={values[indexOfElectionID]}/>
                     </td>
                     <td>
-                        <Requests type='register' electionID={values[indexOfElectionID]}/>
+                        <Requests type='register' electionType={type} electionID={values[indexOfElectionID]}/>
                     </td>
                 </tr>
             ))}
