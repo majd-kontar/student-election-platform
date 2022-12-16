@@ -9,17 +9,13 @@ table {
     border-spacing: 0;
     border: 1px solid #ddd;
 }
-
 @media screen and (min-width: 800px) {
     table {
-        width: 90%;
-    }
+        width: 90%;}
 }
-
 @media screen and (min-width: 1000px) {
     table {
-        width: 80%;
-    }
+        width: 80%;}
 }
 
 table thead tr {
@@ -39,7 +35,7 @@ table thead tr {
 }
 
 .table tbody tr:nth-of-type(even) {
-    background-color: #d9ffd9;
+    background-color: lightgreen;
 }
 
 .table tbody tr:last-of-type {
