@@ -1,16 +1,13 @@
-import React, {Fragment} from "react";
+import React from "react";
 
 const OptionGenerator = (props) => {
     let opts = props.options
     return (
-        <Fragment>
-            <option value="">Choose an option</option>
-            {opts.map((option) => (
-                <option value={opts.indexOf(option)}>
-                    {option}
-                </option>
-            ))}
-        </Fragment>)
+        opts.map((option) => (
+            <option value={opts.indexOf(option)}>
+                {option}
+            </option>
+        )))
         ;
 }
 export default OptionGenerator;

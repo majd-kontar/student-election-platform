@@ -47,7 +47,7 @@ const Profile = (props) => {
 
     const handleUpdateProfile = e => {
         e.preventDefault();
-        updateProfile(school, major, cls, campus, address, phoneNb, password, studentRecoveryEmail,cookies).then((response) => {
+        updateProfile(school, major, cls, campus, address, phoneNb, password, studentRecoveryEmail, cookies).then((response) => {
             const data = response.data
             if (data['ERROR']) {
                 setMessage(data['ERROR']);
@@ -64,122 +64,124 @@ const Profile = (props) => {
     return (
         <div>
             <Navbar/>
-            <div className="Auth-form-container">
-                <form className="Auth-form">
-                    <div className="Auth-form-content">
-                        <h3 className="Auth-form-title">Edit Profile</h3>
-                        <span style={{color: 'red'}}>{message}</span>
-                        <div className="form-group mt-3">
-                            <label>School</label>
-                            <select
-                                className="form-control mt-1"
-                                required={true}
-                                onChange={e => {
-                                    setSchool(e.target.value)
-                                }}
-                                value={school}
-                            >
-                                {OptionGenerator(schools)}
-                            </select>
+            <div className="Background">
+                <div className="Auth-form-container">
+                    <form className="Auth-form">
+                        <div className="Auth-form-content">
+                            <h3 className="Auth-form-title">Edit Profile</h3>
+                            <span style={{color: 'red'}}>{message}</span>
+                            <div className="form-group mt-3">
+                                <label>School</label>
+                                <select
+                                    className="form-control mt-1"
+                                    required={true}
+                                    onChange={e => {
+                                        setSchool(e.target.value)
+                                    }}
+                                    value={school}
+                                >
+                                    <OptionGenerator options={schools}/>
+                                </select>
+                            </div>
+                            <div className="form-group mt-3">
+                                <label>Major</label>
+                                <select
+                                    className="form-control mt-1"
+                                    required={true}
+                                    onChange={e => {
+                                        setMajor(e.target.value)
+                                    }}
+                                    value={major}
+                                >
+                                    <OptionGenerator options={majors}/>
+                                </select>
+                            </div>
+                            <div className="form-group mt-3">
+                                <label>Standing</label>
+                                <select
+                                    className="form-control mt-1"
+                                    required={true}
+                                    onChange={e => {
+                                        setCls(e.target.value)
+                                    }}
+                                    value={cls}
+                                >
+                                    <OptionGenerator options={standings}/>
+                                </select>
+                            </div>
+                            <div className="form-group mt-3">
+                                <label>Campus</label>
+                                <select
+                                    className="form-control mt-1"
+                                    required={true}
+                                    onChange={e => {
+                                        setCampus(e.target.value)
+                                    }}
+                                    value={campus}
+                                >
+                                    <OptionGenerator options={campuses}/>
+                                </select>
+                            </div>
+                            <div className="form-group mt-3">
+                                <label>Address</label>
+                                <input
+                                    type="text"
+                                    className="form-control mt-1"
+                                    placeholder="e.g Aley, Lebanon"
+                                    required={true}
+                                    onChange={e => {
+                                        setAddress(e.target.value)
+                                    }}
+                                    value={address}
+                                />
+                            </div>
+                            <div className="form-group mt-3">
+                                <label>Phone Number</label>
+                                <input
+                                    type="text"
+                                    className="form-control mt-1"
+                                    placeholder="e.g 71705620"
+                                    required={true}
+                                    onChange={e => {
+                                        setPhoneNb(e.target.value)
+                                    }}
+                                    value={phoneNb}
+                                />
+                            </div>
+                            <div className="form-group mt-3">
+                                <label>Recovery Email</label>
+                                <input
+                                    type="email"
+                                    className="form-control mt-1"
+                                    placeholder="e.g majdkontar@gmail.com"
+                                    required={true}
+                                    onChange={e => {
+                                        setStudentRecoveryEmail(e.target.value)
+                                    }}
+                                    value={studentRecoveryEmail}
+                                />
+                            </div>
+                            <div className="form-group mt-3">
+                                <label>Password</label>
+                                <input
+                                    type="password"
+                                    className="form-control mt-1"
+                                    placeholder="Re-enter password"
+                                    required={true}
+                                    onChange={e => {
+                                        setPassword(e.target.value)
+                                    }}
+                                    value={password}
+                                />
+                            </div>
+                            <div className="d-grid gap-2 mt-3">
+                                <button type="submit" className='submitButton' onClick={handleUpdateProfile}>
+                                    Update
+                                </button>
+                            </div>
                         </div>
-                        <div className="form-group mt-3">
-                            <label>Major</label>
-                            <select
-                                className="form-control mt-1"
-                                required={true}
-                                onChange={e => {
-                                    setMajor(e.target.value)
-                                }}
-                                value={major}
-                            >
-                                {OptionGenerator(majors)}
-                            </select>
-                        </div>
-                        <div className="form-group mt-3">
-                            <label>Standing</label>
-                            <select
-                                className="form-control mt-1"
-                                required={true}
-                                onChange={e => {
-                                    setCls(e.target.value)
-                                }}
-                                value={cls}
-                            >
-                                {OptionGenerator(standings)}
-                            </select>
-                        </div>
-                        <div className="form-group mt-3">
-                            <label>Campus</label>
-                            <select
-                                className="form-control mt-1"
-                                required={true}
-                                onChange={e => {
-                                    setCampus(e.target.value)
-                                }}
-                                value={campus}
-                            >
-                                {OptionGenerator(campuses)}
-                            </select>
-                        </div>
-                        <div className="form-group mt-3">
-                            <label>Address</label>
-                            <input
-                                type="text"
-                                className="form-control mt-1"
-                                placeholder="e.g Aley, Lebanon"
-                                required={true}
-                                onChange={e => {
-                                    setAddress(e.target.value)
-                                }}
-                                value={address}
-                            />
-                        </div>
-                        <div className="form-group mt-3">
-                            <label>Phone Number</label>
-                            <input
-                                type="text"
-                                className="form-control mt-1"
-                                placeholder="e.g 71705620"
-                                required={true}
-                                onChange={e => {
-                                    setPhoneNb(e.target.value)
-                                }}
-                                value={phoneNb}
-                            />
-                        </div>
-                        <div className="form-group mt-3">
-                            <label>Recovery Email</label>
-                            <input
-                                type="email"
-                                className="form-control mt-1"
-                                placeholder="e.g majdkontar@gmail.com"
-                                required={true}
-                                onChange={e => {
-                                    setStudentRecoveryEmail(e.target.value)
-                                }}
-                                value={studentRecoveryEmail}
-                            />
-                        </div>
-                        <div className="form-group mt-3">
-                            <label>Password</label>
-                            <input
-                                type="password"
-                                className="form-control mt-1"
-                                placeholder="Re-enter password"
-                                required={true}
-                                onChange={e => {
-                                    setPassword(e.target.value)
-                                }}
-                                value={password}
-                            />
-                        </div>
-                        <div className="d-grid gap-2 mt-3">
-                            <button type="submit" className="btn btn-primary" onClick={handleUpdateProfile}>
-                                Update
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     )
