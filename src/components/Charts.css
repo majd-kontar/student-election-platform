@@ -1,0 +1,17 @@
+div.pie-chart {
+}
+
+.chart rect {
+
+}
+
+.horizontal-rule {
+    width: 90%;
+    height: 2px;
+    border-radius: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #00614b;
+    background-color: #00614b;
+    border-color: inherit;
+}
