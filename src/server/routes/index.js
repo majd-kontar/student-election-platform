@@ -31,15 +31,13 @@ app.post('/register', [
     //input validations
     check("firstName", "Input your first name").notEmpty(),
     check("lastName", "Input your last name").notEmpty(),
-    check("username", "Choose your username").notEmpty(),
+    check("studentUsername", "Choose your username").notEmpty(),
     check("studentEmail", "Please enter a valid email").isEmail(),
     check("studentPassword", "Please choose a password with at least 8 characters").isLength({min: 8})
 
 
 ], (req, res) => {
-    console.log(req.body)
-    const {firstName, lastName, username, studentEmail, studentPassword} = req.body;
-
+    const {firstName, lastName, studentUsername, studentEmail, studentPassword} = req.body;
     const errors = validationResult(req); //array that contains errors from validator
 
     if (!errors.isEmpty()) {
@@ -47,19 +45,21 @@ app.post('/register', [
     }
     //validate that user doesn't already exits
 
-    db.query("SELECT * FROM student WHERE studentUsername=?", [username], (err, result) => {
+    db.query("SELECT * FROM student WHERE studentUsername=?", [studentUsername], (err, result) => {
         if (result.length > 0) {
             console.log(result)
             return res.status(422).json({'Error': "Username already exists"});
         }
+        //hash password before saving it into DB
         const hashed_password = bcrypt.hash(studentPassword, 8).then((hashed_password => {
 
-            let values = [firstName, lastName, username, studentEmail, hashed_password]
-
-            db.query("INSERT INTO student(firstName,lastName,studentUsername,studentEmail, studentPassword) VALUES (?)",
+            let values = [firstName, lastName, studentUsername, studentEmail, hashed_password]
+            db.query("INSERT INTO student(firstname, lastname, studentUsername, studentEmail, studentPassword) VALUES (?)",
                 [values],
                 (err, result) => {
+                    console.log('here(');
                     if (err) {
+                        console.log(err);
                         return res.status(400).json({'Error': err});
                     }
                     message = "Registration Successful!"
@@ -82,55 +82,133 @@ app.post('/register', [
 //         return('/register')
 //     };
 // });
-//hash password before saving it into DB
 
 
+app.patch('/updateProfile', [
+    //input validations
+    check("firstName", "Input your first name").notEmpty(),
+    check("lastName", "Input your last name").notEmpty(),
+    check("username", "Choose your username").notEmpty(),
+    check("studentEmail", "Please enter a valid email").isEmail(),
+    check("studentPassword", "Please choose a password with at least 8 characters").isLength({min: 8})
+
+
+], (req, res) => {
+    console.log(req.body)
+    const {firstName, lastName, username, studentEmail, studentPassword} = req.body;
+    console.log(req.body);
+    const errors = validationResult(req); //array that contains errors from validator
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({Errors: errors.array()});
+    }
+        //hash password before saving it into DB
+        const hashed_password = bcrypt.hash(studentPassword, 8).then((hashed_password => {
+
+            let values = [firstName, lastName, username, studentEmail, hashed_password]
+            db.query(`UPDATE student SET VALUES (firstName,lastName,studentUsername,studentEmail, studentPassword) WHERE studentUsername = ${username}`,
+                [values],
+                (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        return res.status(400).json({'Error': err});
+                    }
+                    console.log(result)
+                    message = "Profile updated successfully!"
+                    res.status(200).json([{'Message': message}, {'Result': result}]);
+                });
+        }))
+    });
+app.post('/admin_set_password', (req, res) => {
+    const username = req.body.username; 
+    const password = req.body.username; 
+    console.log(username)
+    
+
+    const hashed_password = bcrypt.hash(password, 8).then((hashed_password =>{
+        db.query("UPDATE admin SET adminPassword=? WHERE adminUsername=?" , [hashed_password, username] ,(err,result) =>{
+            if (err) {
+                console.log(err); 
+                return res.status(400).json({'Error': err}); 
+            }
+            console.log(result);
+            message = "Password updated successfully!"; 
+            res.status(200).json({'Message': message}); 
+    
+        });
+    }));
+  
+})
 app.get('/login', (req, res) => {
-    const username = req.query.username;
-    const password = req.query.password;
+    const username = req.body.username;
+    const password = req.body.password;
     //login will be based on username
     db.query("SELECT * FROM student WHERE studentUsername=?", [username], (err, result) => {
         if (result.length == 0) {
-            message = "Oops! User Doesn't Exist";
-            res.status(404).json({'Error': message});
-            return ('/login')
-        }
+            db.query("SELECT * FROM admin WHERE adminUsername=?", [username], (err, result) =>{
+                if (result.length > 0){
 
-        const db_user = JSON.parse(JSON.stringify(result[0]));
+                    const db_user = JSON.parse(JSON.stringify(result[0]));
 
-        const db_pass = db_user.studentPassword;
-        const stdId = db_user.studentId;
+                    const db_pass = db_user.adminPassword;
+                    const adId = db_user.adminUsername;
 
-        //check is user inputted password matches saved password
-        bcrypt.compare(password, db_pass).then((match) => {
-            if (!match) {
-                message = "Invalid Credentials."
-                res.status(403).json({'Error': message});
-            } else {
-                //if they match, create and send JWT
-                accessToken = createJWT(stdId);
-                message = "Successfully Logged In!";
-                res.writeHead(200, {"access-token": accessToken});
-                res.end(message);
-                // {
-                // maxAge: 2592000,
-                // // httpOnly: false,
-                // secure: true,
-                // sameSite: 'none',
-                // });
-                // res.status(200).json({'Message': message});
-                // res.redirect('/profile');
-            }
-
-        });
-    })
-});
+                    //check if user inputted password matches saved password
+                    bcrypt.compare(password, db_pass).then((match) => {
+                        if (!match) {
+                            console.log(db_pass, password)
+                            message = "Invalid Credentials."
+                            res.status(403).json({'Error': message});
+                        } else {
+                            //if they match, create and send JWT
+                            accessToken = createJWT(adId, true);
+                            message = "Successfully Logged In!";
+                            res.writeHead(200, {"access-token": accessToken});
+                            res.end(message);
+                        }
+                    })
+                }else{
+                message = "Oops! User Doesn't Exist";
+                res.status(404).json({'Error': message});
+                return ('/login') 
+                } })
+        }else{
+            const db_user = JSON.parse(JSON.stringify(result[0]));
+            
+            const db_pass = db_user.password;
+            const stdId = db_user.username;
+    
+            //check if user inputted password matches saved password
+            bcrypt.compare(password, db_pass).then((match) => {
+                if (!match) {
+                    message = "Invalid Credentials."
+                    res.status(403).json({'Error': message});
+                } else {
+                    //if they match, create and send JWT
+                    accessToken = createJWT(stdId, false);
+                    message = "Successfully Logged In!";
+                    res.writeHead(200, {"access-token": accessToken});
+                    res.end(message);
+                    // {
+                    // maxAge: 2592000,
+                    // // httpOnly: false,
+                    // secure: true,
+                    // sameSite: 'none',
+                    // });
+                    // res.status(200).json({'Message': message});
+                    // res.redirect('/profile');
+                }
+    
+            });
+        }});
+    });
+        
 app.get('/admin-login', (req, res) => {
     const username = req.body.adminUsername;
     const password = req.body.adminPassword;
-
+    
     //login will be based on username
-    db.query("SELECT * FROM admin WHERE adminUsername=?", [adminUsername], (err, result) => {
+    db.query("SELECT * FROM admin WHERE adminUsername=?", [username], (err, result) => {
 
         if (result.length == 0) {
             message = "Oops! Not an Admin";
@@ -141,19 +219,23 @@ app.get('/admin-login', (req, res) => {
         const db_user = JSON.parse(JSON.stringify(result[0]));
 
         const db_pass = db_user.adminPassword;
-
+        const aId = db_user.adminUsername
         //check is user inputted password matches saved password
-        bcrypt.compare(password, db_pass).then((match) => {
+        bcrypt.compare(password,db_pass).then((match) => {
+            console.log(match)
             if (!match) {
                 message = "Invalid Credentials."
                 res.status(403).json({'Error': message});
             } else {
                 //if they match, create and send JWT
-                accessToken = createJWT(stdId);
-                res.cookie("access-token", accessToken, {
-                    maxAge: 2592000,
-                    httpOnly: true
-                });
+                accessToken = createJWT(aId,true);
+                message = "Successfully Logged In!";
+                res.writeHead(200, {"access-token": accessToken});
+                res.end(message);
+                // res.cookie("access-token", accessToken, {
+                //     maxAge: 2592000,
+                //     httpOnly: true
+                // });
 
                 message = "Successfully Logged In!";
                 res.redirect('/profile');
@@ -177,6 +259,32 @@ app.get('/profile', autheticateJWT, (req, res) => {
 
 })
 
+app.get('/getElections', autheticateJWT, (req, res) => {
+    if (autheticateJWT) {
+        db.query("SELECT * FROM elections", [studentId], (err, result) => {
+
+        })
+        res.send(results);
+    } else {
+        res.send("log in to view the page")
+    }
+    res.end()
+
+});
+
+app.get('/getElectionsById', autheticateJWT, (req, res) => {
+    const id = req.body.id;
+    if (autheticateJWT) {
+        db.query("SELECT * FROM elections WHERE electionID = " + id, [studentId], (err, result) => {
+
+        })
+        res.send(results);
+    } else {
+        res.send("log in to view the page")
+    }
+    res.end()
+
+});
 
 app.get('/logout', (req, res) => {
     res.cookie("access-token", null);
@@ -187,5 +295,5 @@ app.get('/logout', (req, res) => {
 app.listen(PORT, (err) => {
     if (err)
         throw err;
-    console.log('listening on port 3000');
+    console.log('listening on port 3002');
 });

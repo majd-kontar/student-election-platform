@@ -4,12 +4,14 @@ const jwtSecretObj = require('../config/configs')
 const jwtSecret = jwtSecretObj.toString(); 
 
 //create the user token and set it to user browser
-const createJWT = (id) => {
+const createJWT = (id, role) => {
     const accessToken = sign( 
-        {id},
+        {id, admin: role},
         jwtSecret.toString(), 
-        {expiresIn: '1200s'} 
+        {expiresIn: '1200s'},
+       
     )
+    console.log(accessToken)
     return accessToken; 
 }; 
 
