@@ -1,10 +1,21 @@
 table {
     border-collapse: collapse;
     margin: 25px 0;
-    font-size: 0.9em;
+    font-size: 1em;
+    font-weight: 50;
     font-family: sans-serif;
-    min-width: 400px;
+    width: 100%;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-spacing: 0;
+    border: 1px solid #ddd;
+}
+@media screen and (min-width: 800px) {
+    table {
+        width: 90%;}
+}
+@media screen and (min-width: 1000px) {
+    table {
+        width: 80%;}
 }
 
 table thead tr {
@@ -15,7 +26,9 @@ table thead tr {
 
 .table th,
 .table td {
-    padding: 12px 15px;
+    text-align: left;
+    padding: 8px;
+
 }
 
 .table tbody tr {
@@ -23,7 +36,7 @@ table thead tr {
 }
 
 .table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
+    background-color: lightgreen;
 }
 
 .table tbody tr:last-of-type {
