@@ -41,6 +41,7 @@ const Requests = (props) => {
         });
     }
     const openModal = () => {
+        setMessage('')
         if (props.type === 'vote') {
             getCandidates(props.electionID);
         }
@@ -99,7 +100,6 @@ const Requests = (props) => {
                             }}
                             value={vote}
                         >
-                            <option value="">Choose an option</option>
                             <OptionGenerator options={candidates}/>
                         </select>
                         <label>
@@ -135,7 +135,6 @@ const Requests = (props) => {
                                     }}
                                     value={position}
                                 >
-                                    <option value="">Choose an option</option>
                                     <OptionGenerator options={clubPositions}/>
                                 </select>
                             </div> :
@@ -168,7 +167,7 @@ const Requests = (props) => {
 
     return (
         <div>
-            <button onClick={openModal}>{label}</button>
+            <button onClick={openModal} disabled={props.disabled}>{label}</button>
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}

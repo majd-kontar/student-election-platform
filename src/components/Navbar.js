@@ -8,28 +8,32 @@ const Navbar = (props) => {
     const [cookies, setCookie,removeCookie] = useCookies(["access-token"]);
     const navigate = useNavigate();
     return (
-        <div className="navbar">
-            <button onClick={() => {
-                navigate('/elections')
-            }}>Elections
-            </button>
-            <button onClick={() => {
-                navigate('/results')
-            }}>Results
-            </button>
-            <button onClick={() => {
-                navigate('/requests')
-            }}>Requests
-            </button>
-            <button onClick={() => {
-                navigate('/profile')
-            }}>Profile
-            </button>
-            <button onClick={() => {
-                removeCookie('access-token');
-                navigate('/')
-            }}>Logout
-            </button>
+        <div>
+            <div className="navbar">
+                <img className='logo' src={require('../resources/lau-logo.png')} alt='LAU Logo'
+                     onClick={() => navigate('/elections')}/>
+                <button onClick={() => {
+                    navigate('/elections')
+                }}>Elections
+                </button>
+                <button onClick={() => {
+                    navigate('/results')
+                }}>Results
+                </button>
+                <button onClick={() => {
+                    navigate('/requests')
+                }}>Requests
+                </button>
+                <button onClick={() => {
+                    navigate('/profile')
+                }}>Profile
+                </button>
+                <button onClick={() => {
+                    removeCookie('access-token');
+                    navigate('/')
+                }}>Logout
+                </button>
+            </div>
         </div>
     )
 }
