@@ -2,7 +2,6 @@ import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"
 import {Route, BrowserRouter as Router, Routes, Redirect, useNavigate} from "react-router-dom";
 import Login from "./screens/Login";
-import Home from "./screens/Home";
 import Elections from "./screens/Elections";
 import Profile from "./screens/Profile";
 import Results from "./screens/Results";
@@ -24,7 +23,6 @@ const App = (props) => {
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/results" element={<Results/>}/>
                     <Route path="/requests" element={<Requests/>}/>
-                    <Route path="/home" element={<Home/>}/>
                     <Route path='/' element={<Login/>}/>
                 </Routes>
             </div>

@@ -9,13 +9,17 @@ table {
     border-spacing: 0;
     border: 1px solid #ddd;
 }
+
 @media screen and (min-width: 800px) {
     table {
-        width: 90%;}
+        width: 90%;
+    }
 }
+
 @media screen and (min-width: 1000px) {
     table {
-        width: 80%;}
+        width: 80%;
+    }
 }
 
 table thead tr {
@@ -28,7 +32,6 @@ table thead tr {
 .table td {
     text-align: left;
     padding: 8px;
-
 }
 
 .table tbody tr {

@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 import OptionGenerator from "../components/OptionGenerator";
 import {getProfile, updateProfile} from "../requests/profile";
 import {useCookies} from "react-cookie";
+import {campuses, majors, schools, standings} from "../data/data";
 
 const Profile = (props) => {
     const navigate = useNavigate()
@@ -18,14 +19,7 @@ const Profile = (props) => {
     let [address, setAddress] = useState('')
     let [phoneNb, setPhoneNb] = useState('')
     let [studentRecoveryEmail, setStudentRecoveryEmail] = useState('')
-    let schools = ['Architecture & Design', 'Arts & Sciences', 'Business', 'Engineering', 'Medicine', 'Nursing', 'Pharmacy']
-    let majors = ['Architecture', 'Bioinformatics', 'Biology', 'Business', 'Chemistry', 'Civil Engineering', 'Communication', 'Computer Engineering', 'Computer Science',
-        'Economics', 'Electrical Engineering', 'English', 'Fashion Design', 'Fine Arts', 'Graphic Design', 'Hospitality', 'Industrial Engineering',
-        'Interior Architecture', 'Interior Design', 'Mathematics', 'Mechanical Engineering', 'Mechatronics Engineering', 'Multimedia Journalism', 'Nursing',
-        'Nutrition', 'Nutrition and Dietetics Coordinated Program', 'Performing Arts', 'Petroleum Engineering', 'Pharmacy', 'Political Science', 'Political Science/International Affairs',
-        'Psychology', 'Television and Film', 'Translation']
-    let standings = ['1', '2', '3', '4', '5+']
-    let campuses = ['Beirut', 'Byblos']
+
     const getProfileData = () => {
         getProfile(cookies).then((response) => {
             const data = response.data

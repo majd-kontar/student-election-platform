@@ -36,7 +36,7 @@ const Login = (props) => {
                         maxAge: 2592000
                     });
                     console.log(response);
-                    navigate('/home')
+                    navigate('/elections')
                 }
             ).catch(error => {
                 try {
@@ -57,7 +57,7 @@ const Login = (props) => {
             signup(firstName, lastName, username, studentEmail, password).then((response) => {
                 const data = response.data
                 console.log(data);
-                navigate('/login')
+                navigate('/profile')
             }).catch(error => {
                 try {
                     console.log(error.response.data['Error'])

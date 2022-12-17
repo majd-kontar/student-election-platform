@@ -10,7 +10,8 @@ const Navbar = (props) => {
     return (
         <div>
             <div className="navbar">
-                <img className='logo' src={require('../resources/lau-logo.png')} alt='LAU Logo'/>
+                <img className='logo' src={require('../resources/lau-logo.png')} alt='LAU Logo'
+                     onClick={() => navigate('/elections')}/>
                 <button onClick={() => {
                     navigate('/elections')
                 }}>Elections
