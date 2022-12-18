@@ -120,7 +120,7 @@ const Login = (props) => {
                                 </button>
                             </div>
                             <p className="text-center mt-2">
-                                Forgot <a href="#">password?</a>
+                                Forgot <a className='link' href="#">password?</a>
                             </p>
                         </div>
                     </form>

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {Fragment, useContext, useEffect, useReducer, useState} from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import "./Request.css"
@@ -21,6 +21,11 @@ const Requests = (props) => {
     let candi = []
     const clubPositions = ['President', 'Vice President', 'Treasurer', 'Secretary']
     const [modalIsOpen, setIsOpen] = React.useState(false);
+    const initialClubVote = {President: "", Vice_President: "", Treasurer: "", Secretary: ""};
+    const [clubVote, setClubVote] = useReducer(
+        (state, updates) => ({...state, ...updates}),
+        initialClubVote
+    );
 
 
     const getCandidates = async (electionID) => {
@@ -41,7 +46,11 @@ const Requests = (props) => {
         });
     }
     const openModal = () => {
+        setVote('')
         setMessage('')
+        setPosition('')
+        setProgram('')
+        setClubVote({President: "", Vice_President: "", Treasurer: "", Secretary: ""})
         if (props.type === 'vote') {
             getCandidates(props.electionID);
         }
@@ -55,6 +64,9 @@ const Requests = (props) => {
 
     const handleSubmit = async (electionID) => {
         if (props.type === 'register') {
+            if (position === '' || program === '') {
+                return setMessage("Please fill all the fields!")
+            }
             submitCandidateForm(position, program, cookies).then((response) => {
                 const data = response.data
                 if (data['ERROR']) {
@@ -62,19 +74,25 @@ const Requests = (props) => {
                 } else {
                     console.log(response);
                     closeModal();
+                    window.location.reload();
                 }
             }).catch(error => {
                 console.log(error['message'])
                 setMessage(error['message']);
             });
         } else {
-            submitVoteForm(data[vote]['studentUsername'], electionID, cookies).then((response) => {
+            if ((props.electionType !== 'Clubs' && vote === '') || (props.electionType === 'Clubs' && clubVote['President'] === '' && clubVote['Vice_President'] === '' && clubVote['Secretary'] === '' && clubVote['Treasurer'] === '')) {
+                return setMessage("Please fill all the fields!")
+            }
+            setMessage('')
+            submitVoteForm(props.electiontType, data[vote]['studentUsername'], clubVote, electionID, cookies).then((response) => {
                 const data = response.data
                 if (data['ERROR']) {
                     setMessage(data['ERROR']);
                 } else {
                     console.log(response);
                     closeModal();
+                    window.location.reload();
                 }
             }).catch(error => {
                 console.log(error['message'])
@@ -85,29 +103,88 @@ const Requests = (props) => {
 
     useEffect(() => {
         if (props.type === 'vote') {
+            console.log(clubVote)
             setLabel('Vote');
             setPopup(<div>
                 <h2>Vote</h2>
                 <span style={{color: 'red'}}>{message}</span>
                 <form>
                     <div className="form-group mt-3">
-                        <label>Choose candidate</label>
-                        <select
-                            className="form-control mt-1"
-                            required={true}
-                            onChange={e => {
-                                setVote(e.target.value)
-                            }}
-                            value={vote}
-                        >
-                            <OptionGenerator options={candidates}/>
-                        </select>
-                        <label>
-                            Program
-                        </label>
-                        <p>
-                            {vote !== '' ? data[vote]['electoralProgram'] : ' '}
-                        </p>
+                        {props.electionType === 'Clubs' ?
+                            <Fragment>
+                                <label>Choose candidates</label>
+                                <div>
+                                    <label>President</label>
+                                    <select
+                                        className="form-control mt-1"
+                                        required={true}
+                                        onChange={e => {
+                                            setClubVote({President: e.target.value})
+                                        }}
+                                        value={clubVote['President']}
+                                    >
+                                        <OptionGenerator options={candidates}/>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Vice President</label>
+                                    <select
+                                        className="form-control mt-1"
+                                        required={true}
+                                        onChange={e => {
+                                            setClubVote({Vice_President: e.target.value})
+                                        }}
+                                        value={clubVote['Vice_President']}
+                                    >
+                                        <OptionGenerator options={candidates}/>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Treasurer</label>
+                                    <select
+                                        className="form-control mt-1"
+                                        required={true}
+                                        onChange={e => {
+                                            setClubVote({Treasurer: e.target.value})
+                                        }}
+                                        value={clubVote['Treasurer']}
+                                    >
+                                        <OptionGenerator options={candidates}/>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Secretary</label>
+                                    <select
+                                        className="form-control mt-1"
+                                        required={true}
+                                        onChange={e => {
+                                            setClubVote({Secretary: e.target.value})
+                                        }}
+                                        value={clubVote['Secretary']}
+                                    >
+                                        <OptionGenerator options={candidates}/>
+                                    </select>
+                                </div>
+                            </Fragment> :
+                            <Fragment>
+                                <label>Choose candidate</label>
+                                <select
+                                    className="form-control mt-1"
+                                    required={true}
+                                    onChange={e => {
+                                        setVote(e.target.value)
+                                    }}
+                                    value={vote}
+                                >
+                                    <OptionGenerator options={candidates}/>
+                                </select>
+                                <label>
+                                    Program
+                                </label>
+                                <p>
+                                    {vote !== '' ? data[vote]['electoralProgram'] : ' '}
+                                </p>
+                            </Fragment>}
                     </div>
                     <div className="d-grid gap-2 mt-3">
                         <button type="button" className="submitButton" onClick={() => {
@@ -124,21 +201,20 @@ const Requests = (props) => {
                 <span style={{color: 'red'}}>{message}</span>
                 <form>
                     <div className="form-group mt-3">
-                        {props.electionType === 'Clubs' ?
-                            <div>
-                                <label>Position</label>
-                                <select
-                                    className="form-control mt-1"
-                                    required={true}
-                                    onChange={e => {
-                                        setPosition(e.target.value)
-                                    }}
-                                    value={position}
-                                >
-                                    <OptionGenerator options={clubPositions}/>
-                                </select>
-                            </div> :
-                            undefined
+                        {props.electionType === 'Clubs' &&
+                        <div>
+                            <label>Position</label>
+                            <select
+                                className="form-control mt-1"
+                                required={true}
+                                onChange={e => {
+                                    setPosition(e.target.value)
+                                }}
+                                value={position}
+                            >
+                                <OptionGenerator options={clubPositions}/>
+                            </select>
+                        </div>
                         }
                     </div>
                     <div className="form-group mt-3">
@@ -162,7 +238,7 @@ const Requests = (props) => {
                 </form>
             </div>)
         }
-    }, [candidates, vote])
+    }, [candidates, vote, clubVote, position, program, message])
 
 
     return (

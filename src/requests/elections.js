@@ -24,10 +24,12 @@ export const submitCandidateForm = (position, program, cookies) => {
         cookies: cookies
     });
 };
-export const submitVoteForm = (candidateUsername, electionID, cookies) => {
+export const submitVoteForm = (type, candidateUsername, clubVote, electionID, cookies) => {
     return axios.post(server + 'submit_vote_form', {
             // userId: token,
+            electionType: type,
             vote: candidateUsername,
+            clubVote: clubVote,
             electionId: electionID,
             cookies: cookies
         }

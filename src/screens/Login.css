@@ -46,43 +46,50 @@ label {
     font-weight: 600;
     color: rgb(34, 34, 34);
 }
-.link{
+
+.link {
+    color: green;
+    text-decoration: none;
+    border-bottom: green 0.125em solid;
+
+}
+
+.link:visited {
+    color: green;
+    text-decoration: none;
+    border-bottom: green 0.125em solid;
+
+}
+
+.link:hover {
     color: blue;
     text-decoration: none;
-    border-bottom:blue 0.125em solid;
+    border-bottom: blue 0.125em solid;
+}
 
-}
-.link:visited{
-    color : green;
-    ttext-decoration: none;
-    border-bottom: green 0.125em solid;
-
-}
-.link:hover{
-    color: green;
-    ttext-decoration: none;
-    border-bottom: green 0.125em solid;
-}
-.link:active{
-    color:green;
-    ttext-decoration: none;
-    border-bottom: green 0.125em solid;
-}
-a:link {
+.link:active {
     color: blue;
+    text-decoration: none;
+    border-bottom: blue 0.125em solid;
 }
 
-/* visited link */
-a:visited {
+a:link {
     color: green;
+    text-decoration: none;
+    border-bottom: green 0.125em solid;
 }
+
 
 /* mouse over link */
 a:hover {
-    color: green;
+    color: blue;
+    text-decoration: none;
+    border-bottom: blue 0.125em solid;
 }
 
 /* selected link */
 a:active {
     color: blue;
+    text-decoration: none;
+    border-bottom: blue 0.125em solid;
 }

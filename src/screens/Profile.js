@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import OptionGenerator from "../components/OptionGenerator";
 import {getProfile, updateProfile} from "../requests/profile";
 import {useCookies} from "react-cookie";
-import {campuses, majors, schools, standings} from "../data/data";
+import {campuses, clubs, majors, schools, standings} from "../data/data";
 
 const Profile = (props) => {
     const navigate = useNavigate()
@@ -18,6 +18,8 @@ const Profile = (props) => {
     let [campus, setCampus] = useState('')
     let [address, setAddress] = useState('')
     let [phoneNb, setPhoneNb] = useState('')
+    let [club1, setClub1] = useState('')
+    let [club2, setClub2] = useState('')
     let [studentRecoveryEmail, setStudentRecoveryEmail] = useState('')
 
     const getProfileData = () => {
@@ -32,6 +34,8 @@ const Profile = (props) => {
                 setCampus(data['campus']);
                 setAddress(data['address']);
                 setPhoneNb(data['phoneNb']);
+                setClub1(data['club1'])
+                setClub2(data['club2'])
                 setStudentRecoveryEmail(data['studentRecoveryEmail']);
             }
         }).catch(error => {
@@ -41,7 +45,13 @@ const Profile = (props) => {
 
     const handleUpdateProfile = e => {
         e.preventDefault();
-        updateProfile(school, major, cls, campus, address, phoneNb, password, studentRecoveryEmail, cookies).then((response) => {
+        if (school === '' || major === '' || cls === '' || address === '' || phoneNb === '' || password === '' || studentRecoveryEmail === '') {
+            return setMessage("Please fill all the fields!")
+        }
+        if (club1 === club2) {
+            return setMessage("You can't register in the same club twice!")
+        }
+        updateProfile(school, major, cls, campus, club1, club2, address, phoneNb, password, studentRecoveryEmail, cookies).then((response) => {
             const data = response.data
             if (data['ERROR']) {
                 setMessage(data['ERROR']);
@@ -114,6 +124,32 @@ const Profile = (props) => {
                                     value={campus}
                                 >
                                     <OptionGenerator options={campuses}/>
+                                </select>
+                            </div>
+                            <div className="form-group mt-3">
+                                <label>Club 1</label>
+                                <select
+                                    className="form-control mt-1"
+                                    required={true}
+                                    onChange={e => {
+                                        setClub1(e.target.value)
+                                    }}
+                                    value={club1}
+                                >
+                                    <OptionGenerator options={clubs}/>
+                                </select>
+                            </div>
+                            <div className="form-group mt-3">
+                                <label>Club 2</label>
+                                <select
+                                    className="form-control mt-1"
+                                    required={true}
+                                    onChange={e => {
+                                        setClub2(e.target.value)
+                                    }}
+                                    value={club2}
+                                >
+                                    <OptionGenerator options={clubs}/>
                                 </select>
                             </div>
                             <div className="form-group mt-3">

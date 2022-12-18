@@ -26,12 +26,14 @@ export const getProfile = (cookies) => {
             }
     })
 }
-export const updateProfile = (school, major, cls, campus, address, phoneNb, password, studentRecoveryEmail, cookies) => {
+export const updateProfile = (school, major, cls, campus, club1, club2, address, phoneNb, password, studentRecoveryEmail, cookies) => {
     return axios.put(server + 'update_profile', {
         school: school,
         major: major,
         cls: cls,
         campus: campus,
+        club1: club1,
+        club2: club2,
         address: address,
         phoneNb: phoneNb,
         studentPassword: password,
