@@ -20,15 +20,6 @@ const GenerateElectionsTable = (props) => {
             }
         )
     }
-    {Object.keys(elections).forEach(key => {
-        tables.push(<div>
-            <h1>
-                {key}
-            </h1>
-            <ElectionsTable tableData={elections[key]}/>
-        </div>)
-    })
-    }
     return (
         <div>
             {tables}

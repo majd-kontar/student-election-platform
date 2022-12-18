@@ -6,15 +6,24 @@
     justify-content: space-evenly;
     flex-wrap: nowrap;
     flex-direction: row;
-    background-color: red;
+    background-color: #00614b;
 }
 
 button {
-    font-size: 16px;
-    border: 2px solid black;
+    font-size: 20px;
+    border-style: groove;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 5px;
-    background-color: beige;
+    background-color: #f0f0f0;
+    transition-duration: 0.4s;
+    padding: 5px 10px;
 }
-th button{
-    
+
+button:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.logo {
+    height: 70px;
 }

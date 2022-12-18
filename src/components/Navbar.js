@@ -5,7 +5,7 @@ import {useCookies} from "react-cookie";
 
 
 const Navbar = (props) => {
-    const [cookies, setCookie,removeCookie] = useCookies(["access-token"]);
+    const [cookies, setCookie, removeCookie] = useCookies(["access-token"]);
     const navigate = useNavigate();
     return (
         <div>

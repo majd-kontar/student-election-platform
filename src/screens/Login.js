@@ -74,24 +74,120 @@ const Login = (props) => {
 
     if (authMode === "signin") {
         return (
+            <div className="Background">
+                <div className="Auth-form-container">
+                    <form className="Auth-form">
+                        <div className="Auth-form-content">
+                            <h3 className="Auth-form-title">Sign In</h3>
+                            <div className="text-center">
+                                Not registered yet?{" "}
+                                <span className="link" onClick={changeAuthMode}>
+                Sign Up
+              </span>
+                            </div>
+                            <span style={{color: 'red'}}>{message}</span>
+                            <div className="form-group mt-3">
+                                <label>Username</label>
+                                <input
+                                    id='email'
+                                    type="email"
+                                    className="form-control mt-1"
+                                    placeholder="Enter Username"
+                                    required={true}
+                                    onChange={e => {
+                                        setUsername(e.target.value)
+                                    }}
+                                    value={username}
+                                />
+                            </div>
+                            <div className="form-group mt-3">
+                                <label>Password</label>
+                                <input
+                                    type="password"
+                                    className="form-control mt-1"
+                                    placeholder="Enter password"
+                                    required={true}
+                                    onChange={e => {
+                                        setPassword(e.target.value)
+                                    }}
+                                    value={password}
+                                />
+                            </div>
+                            <div className="d-grid gap-2 mt-3">
+                                <button type="submit" className="submitButton"
+                                        onClick={handleSignIn}>
+                                    Submit
+                                </button>
+                            </div>
+                            <p className="text-center mt-2">
+                                Forgot <a href="#">password?</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div className="Background">
             <div className="Auth-form-container">
                 <form className="Auth-form">
                     <div className="Auth-form-content">
-                        <h3 className="Auth-form-title">Sign In</h3>
+                        <h3 className="Auth-form-title">Sign Up</h3>
                         <div className="text-center">
-                            Not registered yet?{" "}
-                            <span className="link-primary" onClick={changeAuthMode}>
-                Sign Up
-              </span>
+                            Already registered?{" "}
+                            <span className="link" onClick={changeAuthMode}>
+              Sign In
+            </span>
                         </div>
                         <span style={{color: 'red'}}>{message}</span>
                         <div className="form-group mt-3">
-                            <label>Username</label>
+                            <label>First Name</label>
                             <input
-                                id='email'
+                                type="text"
+                                className="form-control mt-1"
+                                placeholder="e.g Jane"
+                                required={true}
+                                onChange={e => {
+                                    setFirstName(e.target.value)
+                                }}
+                                value={firstName}
+                            />
+                        </div>
+
+                        <div className="form-group mt-3">
+                            <label>Last Name</label>
+                            <input
+                                type="text"
+                                className="form-control mt-1"
+                                placeholder="e.g Doe"
+                                required={true}
+                                onChange={e => {
+                                    setLastName(e.target.value)
+                                }}
+                                value={lastName}
+                            />
+                        </div>
+                        <div className="form-group mt-3">
+                            <label>Email</label>
+                            <input
                                 type="email"
                                 className="form-control mt-1"
-                                placeholder="Enter Username"
+                                placeholder="e.g majd.alkontar@lau.edu"
+                                required={true}
+                                onChange={e => {
+                                    setStudentEmail(e.target.value)
+                                }}
+                                value={studentEmail}
+                            />
+                        </div>
+                        <div className="form-group mt-3">
+                            <label>Username</label>
+                            <input
+                                type="text"
+                                className="form-control mt-1"
+                                placeholder="e.g majd-kontar"
                                 required={true}
                                 onChange={e => {
                                     setUsername(e.target.value)
@@ -105,134 +201,42 @@ const Login = (props) => {
                                 type="password"
                                 className="form-control mt-1"
                                 placeholder="Enter password"
+                                minLength="8"
                                 required={true}
                                 onChange={e => {
                                     setPassword(e.target.value)
                                 }}
                                 value={password}
                             />
+                            {(password.length < 8 && password.length > 0) ?
+                                <span style={{color: 'red'}}>Password is too short</span> : <span/>}
+                        </div>
+                        <div className="form-group mt-3">
+                            <label>Confirm Password</label>
+                            <input
+                                type="password"
+                                className="form-control mt-1"
+                                placeholder="Re-write password"
+                                required={true}
+                                onChange={e => {
+                                    setConfirmPassword(e.target.value)
+                                }}
+                                value={confirmPassword}
+                            />
+                            {(password !== confirmPassword && password !== '') ?
+                                <span style={{color: 'red'}}>{passwordMessage}</span> : <span/>}
                         </div>
                         <div className="d-grid gap-2 mt-3">
-                            <button type="submit" className="btn btn-primary"
-                                    onClick={handleSignIn}>
+                            <button type="submit" className="submitButton" onClick={handleSignUp}>
                                 Submit
                             </button>
                         </div>
                         <p className="text-center mt-2">
-                            Forgot <a href="#">password?</a>
+                            Forgot <a className='link' href="#">password?</a>
                         </p>
                     </div>
                 </form>
             </div>
-        )
-    }
-
-    return (
-        <div className="Auth-form-container">
-            <form className="Auth-form">
-                <div className="Auth-form-content">
-                    <h3 className="Auth-form-title">Sign Up</h3>
-                    <div className="text-center">
-                        Already registered?{" "}
-                        <span className="link-primary" onClick={changeAuthMode}>
-              Sign In
-            </span>
-                    </div>
-                    <span style={{color: 'red'}}>{message}</span>
-                    <div className="form-group mt-3">
-                        <label>First Name</label>
-                        <input
-                            type="text"
-                            className="form-control mt-1"
-                            placeholder="e.g Jane"
-                            required={true}
-                            onChange={e => {
-                                setFirstName(e.target.value)
-                            }}
-                            value={firstName}
-                        />
-                    </div>
-
-                    <div className="form-group mt-3">
-                        <label>Last Name</label>
-                        <input
-                            type="text"
-                            className="form-control mt-1"
-                            placeholder="e.g Doe"
-                            required={true}
-                            onChange={e => {
-                                setLastName(e.target.value)
-                            }}
-                            value={lastName}
-                        />
-                    </div>
-                    <div className="form-group mt-3">
-                        <label>Email</label>
-                        <input
-                            type="email"
-                            className="form-control mt-1"
-                            placeholder="e.g majd.alkontar@lau.edu"
-                            required={true}
-                            onChange={e => {
-                                setStudentEmail(e.target.value)
-                            }}
-                            value={studentEmail}
-                        />
-                    </div>
-                    <div className="form-group mt-3">
-                        <label>Username</label>
-                        <input
-                            type="text"
-                            className="form-control mt-1"
-                            placeholder="e.g majd-kontar"
-                            required={true}
-                            onChange={e => {
-                                setUsername(e.target.value)
-                            }}
-                            value={username}
-                        />
-                    </div>
-                    <div className="form-group mt-3">
-                        <label>Password</label>
-                        <input
-                            type="password"
-                            className="form-control mt-1"
-                            placeholder="Enter password"
-                            minLength="8"
-                            required={true}
-                            onChange={e => {
-                                setPassword(e.target.value)
-                            }}
-                            value={password}
-                        />
-                        {(password.length < 8 && password.length > 0) ?
-                            <span style={{color: 'red'}}>Password is too short</span> : <span/>}
-                    </div>
-                    <div className="form-group mt-3">
-                        <label>Confirm Password</label>
-                        <input
-                            type="password"
-                            className="form-control mt-1"
-                            placeholder="Re-write password"
-                            required={true}
-                            onChange={e => {
-                                setConfirmPassword(e.target.value)
-                            }}
-                            value={confirmPassword}
-                        />
-                        {(password !== confirmPassword && password !== '') ?
-                            <span style={{color: 'red'}}>{passwordMessage}</span> : <span/>}
-                    </div>
-                    <div className="d-grid gap-2 mt-3">
-                        <button type="submit" className="btn btn-primary" onClick={handleSignUp}>
-                            Submit
-                        </button>
-                    </div>
-                    <p className="text-center mt-2">
-                        Forgot <a href="#">password?</a>
-                    </p>
-                </div>
-            </form>
         </div>
     )
 }
