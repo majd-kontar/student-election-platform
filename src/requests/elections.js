@@ -17,8 +17,9 @@ export const retrieveCandidates = (electionID, cookies) => {
         }
     });
 };
-export const submitCandidateForm = (position, program, cookies) => {
-    return axios.put(server + 'submit_candidate_form', {
+export const submitCandidateForm = (electionID, position, program, cookies) => {
+    return axios.post(server + 'submit_candidate_form', {
+        electionID: electionID,
         position: position,
         program: program,
         cookies: cookies
@@ -26,7 +27,6 @@ export const submitCandidateForm = (position, program, cookies) => {
 };
 export const submitVoteForm = (type, candidateUsername, clubVote, electionID, cookies) => {
     return axios.post(server + 'submit_vote_form', {
-            // userId: token,
             electionType: type,
             vote: candidateUsername,
             clubVote: clubVote,
@@ -53,4 +53,16 @@ export const retrieveResults = (cookies) => {
                 cookies
             }
     });
+};
+export const retrieveCouncilResults = (cookies) => {
+    return axios.post(server + 'store_council_results', {
+        cookies
+    })
+        ;
+};
+export const retrieveRepResults = (cookies) => {
+    return axios.post(server + 'store_rep_results', {
+        cookies
+    })
+        ;
 };

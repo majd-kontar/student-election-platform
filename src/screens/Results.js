@@ -1,45 +1,72 @@
 import Navbar from "../components/Navbar";
 import ResultsChart from "../components/ResultsChart";
-import {retrieveElections, retrieveResults} from "../requests/elections";
-import {useEffect, useState} from "react";
+import {retrieveCouncilResults, retrieveElections, retrieveRepResults, retrieveResults} from "../requests/elections";
+import {Fragment, useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
+import inventory from "bootstrap/js/src/dom/selector-engine";
 
 const Results = (props) => {
     const [cookies, setCookie] = useCookies(["access-token"]);
     const [results, setResults] = useState([]);
+    const [councilWinner, setCouncilWinner] = useState('');
+    const [councilElectionName, setCouncilElectionName] = useState('');
+    const [councilData, setCouncilData] = useState([])
+    const [repWinner, setRepWinner] = useState('');
+    const [repElectionName, setRepElectionName] = useState('');
+    const [repData, setRepData] = useState([])
     const getResults = async () => {
-        retrieveResults(cookies).then((response) => {
+        retrieveCouncilResults(cookies).then((response) => {
             const data = response.data
             if (data['ERROR']) {
                 console.log(data['ERROR']);
-                setResults(data['ERROR']);
             } else {
-                setResults(data['Result']);
-                console.log(data);
+                console.log(data)
+                setCouncilData(data['Results'])
+                setCouncilWinner(data['Results'][data['Results'].length - 1]['winnerName'])
+                setCouncilElectionName(data['Results'][0]['electionName'])
+            }
+        }).catch(error => {
+            console.log(error)
+        });
+        retrieveRepResults(cookies).then((response) => {
+            const data = response.data
+            if (data['ERROR']) {
+                console.log(data['ERROR']);
+            } else {
+                console.log(data)
+                setRepData(data['Results'])
+                setRepWinner(data['Results'][data['Results'].length - 1]['winnerName'])
+                setRepElectionName(data['Results'][0]['electionName'])
             }
         }).catch(error => {
             console.log(error)
         });
     }
     useEffect(() => {
-        getResults();
+        getResults()
     }, [])
-    let data = [
-        ["Votes", "Votes per Candidate"],
-        ["Jane Doe", 11],
-        ["John Doe", 2],
-        ["Marie Dreary", 2],
-        ["Ali Hassan", 7],
-    ];
+
+
     return (
         <div>
             <Navbar/>
             <div>
-                <h1>Computer Engineering Representative</h1>
-                <h2>Winner: {data[1][0]}</h2>
-                <div className='pie-chart'>
-                    <ResultsChart data={data}/>
-                </div>
+                {councilData.length > 1 &&
+                <Fragment>
+                    <h1>{councilElectionName}</h1>
+                    <h2>Winner: {councilWinner}</h2>
+                    <div className='pie-chart'>
+                        <ResultsChart data={councilData}/>
+                    </div>
+                </Fragment>}
+                {repData.length > 1 &&
+                <Fragment>
+                    <h1>{repElectionName}</h1>
+                    <h2>Winner: {repWinner}</h2>
+                    <div className='pie-chart'>
+                        <ResultsChart data={repData}/>
+                    </div>
+                </Fragment>}
             </div>
             <div className="horizontal-rule"/>
         </div>

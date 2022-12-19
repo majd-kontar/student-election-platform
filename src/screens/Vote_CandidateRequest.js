@@ -5,7 +5,7 @@ import "./Vote_CandidateRequest.css"
 import axios from "axios";
 import {useCookies} from "react-cookie";
 import {retrieveCandidates, retrieveElections, submitCandidateForm, submitVoteForm} from "../requests/elections";
-import OptionGenerator from "../functions/OptionGenerator";
+import OptionGenerator from "../functions/OptionGeneratorUsingIndex";
 
 
 const Vote_CandidateRequest = (props) => {
@@ -39,7 +39,7 @@ const Vote_CandidateRequest = (props) => {
                     candi.push(value['name'])
                 })
                 setCandidates(candi)
-                console.log(data);
+                setData(data.Result);
             }
         }).catch(error => {
             console.log(error)
@@ -64,20 +64,21 @@ const Vote_CandidateRequest = (props) => {
 
     const handleSubmit = async (electionID) => {
         if (props.type === 'register') {
-            if (position === '' || program === '') {
+            if ((props.electionType === 'Clubs' && position === '') || (props.electionType !== 'Clubs' && program === '')) {
                 return setMessage("Please fill all the fields!")
             }
-            submitCandidateForm(position, program, cookies).then((response) => {
+            submitCandidateForm(electionID, position, program, cookies).then((response) => {
                 const data = response.data
                 if (data['ERROR']) {
                     setMessage(data['ERROR']);
                 } else {
                     console.log(response);
-                    closeModal();
-                    window.location.reload();
+                    setMessage(data['message'])
+                    // closeModal();
+                    // window.location.reload();
                 }
             }).catch(error => {
-                console.log(error['message'])
+                console.log(error)
                 setMessage(error['message']);
             });
         } else {
@@ -85,14 +86,14 @@ const Vote_CandidateRequest = (props) => {
                 return setMessage("Please fill all the fields!")
             }
             setMessage('')
-            submitVoteForm(props.electiontType, data[vote]['studentUsername'], clubVote, electionID, cookies).then((response) => {
+            submitVoteForm(props.electionType, data[vote]['studentUsername'], clubVote, electionID, cookies).then((response) => {
                 const data = response.data
                 if (data['ERROR']) {
                     setMessage(data['ERROR']);
                 } else {
-                    console.log(response);
-                    closeModal();
-                    window.location.reload();
+                    setMessage(data['message']);
+                    // window.location.reload();
+                    // closeModal();
                 }
             }).catch(error => {
                 console.log(error['message'])
@@ -178,12 +179,6 @@ const Vote_CandidateRequest = (props) => {
                                 >
                                     <OptionGenerator options={candidates}/>
                                 </select>
-                                <label>
-                                    Program
-                                </label>
-                                <p>
-                                    {vote !== '' ? data[vote]['electoralProgram'] : ' '}
-                                </p>
                             </Fragment>}
                     </div>
                     <div className="d-grid gap-2 mt-3">
@@ -232,7 +227,7 @@ const Vote_CandidateRequest = (props) => {
                         />
                     </div>}
                     <div className="d-grid gap-2 mt-3">
-                        <button type="button" className="submitButton" onClick={handleSubmit}>
+                        <button type="button" className="submitButton" onClick={() => handleSubmit(props.electionID)}>
                             Submit
                         </button>
                     </div>

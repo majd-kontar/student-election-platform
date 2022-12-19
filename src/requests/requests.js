@@ -1,13 +1,23 @@
 import axios from "axios";
 import {server} from "../config/data";
+import decode from "../functions/DecodeToken";
 
 export const retrieveRequests = (cookies) => {
-    return axios.get(server + 'get_requests', {
-        params:
-            {
-                cookies
-            }
-    });
+    if (decode(cookies)['admin']) {
+        return axios.get(server + 'get_requests', {
+            params:
+                {
+                    cookies
+                }
+        });
+    }else {
+        return axios.get(server + 'get_requests_by_id', {
+            params:
+                {
+                    cookies
+                }
+        });
+    }
 };
 export const acceptRequest = (formId, cookies) => {
     return axios.get(server + 'accept_form/', {

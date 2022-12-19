@@ -32,6 +32,7 @@ const RequestsTable = (props) => {
                 return {'ERROR': data['ERROR']};
             } else {
                 console.log(data['Result']);
+                window.location.reload()
                 return data['Result'];
             }
         }).catch(error => {
@@ -47,6 +48,7 @@ const RequestsTable = (props) => {
                 // setRequests({'ERROR': data['ERROR']});
             } else {
                 // setRequests(data['Result']);
+                window.location.reload()
                 console.log(data['Result']);
             }
         }).catch(error => {

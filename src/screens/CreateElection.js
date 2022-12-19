@@ -31,6 +31,7 @@ const CreateElection = (props) => {
 
     const closeModal = () => {
         setIsOpen(false);
+        window.location.reload()
     }
     const handleChange = (event) => {
         setType(event.target.value)
@@ -51,11 +52,11 @@ const CreateElection = (props) => {
         }
         submitCreateElectionForm(type, campus, club, major, endDate, cookies).then((response) => {
             const data = response.data
+            console.log(data)
             if (data['ERROR']) {
                 setMessage(data['ERROR']);
             } else {
-                console.log(response);
-                closeModal();
+                setMessage(data['message']);
             }
         }).catch(error => {
             console.log(error['message'])
