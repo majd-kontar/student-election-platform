@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+# Student Election Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![SignIn.png](src/resources/signIn.png)
 
-## Available Scripts
+## Description
 
-In the project directory, you can run:
+This website allows LAU students to vote, and run for club positions, council members, and major representatives. All
+this with the supervision of admins who can create elections, accept/reject candidates' forms, and monitor the results.
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Elections
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* View available elections
+* Vote in elections
+* Register in elections
+* Create elections
 
-### `npm test`
+![Elections.png](src/resources/elections.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Vote
 
-### `npm run build`
+![Vote.png](src/resources/vote.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Register
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![Register.png](src/resources/register.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Create
 
-### `npm run eject`
+![Create.png](src/resources/create.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Requests
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* View candidacy requests
+* Approve/reject requests
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![Requests.png](src/resources/requests.png)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Results
 
-## Learn More
+* View results
+* View vote percentages
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![results.png](src/resources/results.png)
