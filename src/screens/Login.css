@@ -1,0 +1,95 @@
+.App {
+    background-color: white;
+}
+
+.Background {
+    background-image: url('../resources/lau.jpg');
+    background-repeat: no-repeat;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+
+.Auth-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.Auth-form {
+    opacity: 0.95;
+    width: 420px;
+    box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.Auth-form-content {
+    padding-left: 12%;
+    padding-right: 12%;
+}
+
+.Auth-form-title {
+    text-align: center;
+    margin-bottom: 1em;
+    font-size: 24px;
+    color: rgb(34, 34, 34);
+    font-weight: 800;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(34, 34, 34);
+}
+
+.link {
+    color: green;
+    text-decoration: none;
+    border-bottom: green 0.125em solid;
+
+}
+
+.link:visited {
+    color: green;
+    text-decoration: none;
+    border-bottom: green 0.125em solid;
+
+}
+
+.link:hover {
+    color: blue;
+    text-decoration: none;
+    border-bottom: blue 0.125em solid;
+}
+
+.link:active {
+    color: blue;
+    text-decoration: none;
+    border-bottom: blue 0.125em solid;
+}
+
+a:link {
+    color: green;
+    text-decoration: none;
+    border-bottom: green 0.125em solid;
+}
+
+
+/* mouse over link */
+a:hover {
+    color: blue;
+    text-decoration: none;
+    border-bottom: blue 0.125em solid;
+}
+
+/* selected link */
+a:active {
+    color: blue;
+    text-decoration: none;
+    border-bottom: blue 0.125em solid;
+}
