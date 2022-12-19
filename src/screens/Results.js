@@ -26,17 +26,20 @@ const Results = (props) => {
     }, [])
     let data = [
         ["Votes", "Votes per Candidate"],
-        ["Work", 11],
-        ["Eat", 2],
-        ["Commute", 2],
-        ["Watch TV", 2],
-        ["Sleep", 7],
+        ["Jane Doe", 11],
+        ["John Doe", 2],
+        ["Marie Dreary", 2],
+        ["Ali Hassan", 7],
     ];
     return (
         <div>
             <Navbar/>
-            <div className='pie-chart'>
-                <ResultsChart title='Sample Chart' data={data}/>
+            <div>
+                <h1>Computer Engineering Representative</h1>
+                <h2>Winner: {data[1][0]}</h2>
+                <div className='pie-chart'>
+                    <ResultsChart data={data}/>
+                </div>
             </div>
             <div className="horizontal-rule"/>
         </div>

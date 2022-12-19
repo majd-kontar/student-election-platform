@@ -57,7 +57,7 @@ const Login = (props) => {
             signup(firstName, lastName, username, studentEmail, password).then((response) => {
                 const data = response.data
                 console.log(data);
-                navigate('/profile')
+                navigate('/login')
             }).catch(error => {
                 try {
                     console.log(error.response.data['Error'])

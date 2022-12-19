@@ -1,8 +1,8 @@
-import Requests from "./Requests";
+import Vote_CandidateRequest from "../screens/Vote_CandidateRequest";
 import React, {Fragment, useEffect, useState} from 'react'
 import "./Tables.css"
 import {useCookies} from "react-cookie";
-import decode from "./DecodeToken";
+import decode from "../functions/DecodeToken";
 import Countdown from "react-countdown";
 
 const ElectionsTable = (props) => {
@@ -14,8 +14,8 @@ const ElectionsTable = (props) => {
     let headers = [];
     let data = [];
     let isDisabled = false;
-    let indexOfElectionID = 0;
-    let indexOfEndTime = 0;
+    let indexOfElectionID = -1;
+    let indexOfEndTime = -1;
 
 
     tableData.forEach((value) => {
@@ -23,15 +23,15 @@ const ElectionsTable = (props) => {
     })
     for (let key in tableData[0]) {
         headers.push(key);
-        if (key === 'electionID') {
+        if (key === 'ID') {
             indexOfElectionID = headers.indexOf(key);
         }
-        if (key === 'electionEndTime') {
+        if (key === 'Election Countdown') {
             indexOfEndTime = headers.indexOf(key);
         }
     }
     tableData.map(value => {
-        endTimes.push(value['electionEndTime'])
+        endTimes.push(value['Election Countdown'])
     })
 
     return (
@@ -74,12 +74,14 @@ const ElectionsTable = (props) => {
                     {!admin &&
                     <Fragment>
                         <td>
-                            <Requests type='vote' electionType={type} electionID={values[indexOfElectionID]}
-                                      disabled={isDisabled}/>
+                            <Vote_CandidateRequest type='vote' electionType={type}
+                                                   electionID={values[indexOfElectionID]}
+                                                   disabled={isDisabled}/>
                         </td>
                         <td>
-                            <Requests type='register' electionType={type} electionID={values[indexOfElectionID]}
-                                      disabled={isDisabled}/>
+                            <Vote_CandidateRequest type='register' electionType={type}
+                                                   electionID={values[indexOfElectionID]}
+                                                   disabled={isDisabled}/>
                         </td>
                     </Fragment>}
                 </tr>

@@ -1,14 +1,14 @@
 import React, {Fragment, useContext, useEffect, useReducer, useState} from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
-import "./Request.css"
+import "./Vote_CandidateRequest.css"
 import axios from "axios";
 import {useCookies} from "react-cookie";
 import {retrieveCandidates, retrieveElections, submitCandidateForm, submitVoteForm} from "../requests/elections";
-import OptionGenerator from "./OptionGenerator";
+import OptionGenerator from "../functions/OptionGenerator";
 
 
-const Requests = (props) => {
+const Vote_CandidateRequest = (props) => {
     const [cookies, setCookie] = useCookies(["access-token"]);
     let [position, setPosition] = useState('')
     let [program, setProgram] = useState('')
@@ -217,6 +217,7 @@ const Requests = (props) => {
                         </div>
                         }
                     </div>
+                    {props.electionType !== 'Clubs' &&
                     <div className="form-group mt-3">
                         <label>Program</label>
                         <input
@@ -229,7 +230,7 @@ const Requests = (props) => {
                             }}
                             value={program}
                         />
-                    </div>
+                    </div>}
                     <div className="d-grid gap-2 mt-3">
                         <button type="button" className="submitButton" onClick={handleSubmit}>
                             Submit
@@ -257,4 +258,4 @@ const Requests = (props) => {
         </div>
     )
 }
-export default Requests;
+export default Vote_CandidateRequest;

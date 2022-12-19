@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import OptionGenerator from "../components/OptionGenerator";
+import OptionGenerator from "../functions/OptionGenerator";
 import {getProfile, updateProfile} from "../requests/profile";
 import {useCookies} from "react-cookie";
 import {campuses, clubs, majors, schools, standings} from "../data/data";

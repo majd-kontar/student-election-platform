@@ -4,9 +4,8 @@ import React, {useContext, useEffect, useState} from "react";
 import GenerateElectionsTable from "../components/GenerateElectionsTable";
 import {retrieveElections} from "../requests/elections";
 import {useCookies} from "react-cookie";
-import decode from "../components/DecodeToken";
-import Requests from "../components/Requests";
-import CreateElection from "../components/CreateElection";
+import decode from "../functions/DecodeToken";
+import CreateElection from "./CreateElection";
 
 
 const Elections = (props) => {
@@ -28,9 +27,7 @@ const Elections = (props) => {
             setElections([{'ERROR': 'Error'}]);
         });
     }
-    const handleCreateElection = () => {
-        return <CreateElection/>
-    }
+
     useEffect(() => {
         getElections();
     }, [])

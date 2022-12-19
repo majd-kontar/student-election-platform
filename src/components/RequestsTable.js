@@ -1,7 +1,7 @@
 import axios from "axios";
 import {acceptRequest, rejectRequest} from "../requests/requests";
 import {useCookies} from "react-cookie";
-import decode from "./DecodeToken";
+import decode from "../functions/DecodeToken";
 import './Tables.css'
 import {Fragment} from "react";
 
@@ -16,7 +16,7 @@ const RequestsTable = (props) => {
     for (let key in tableData) {
         headers.push(key);
         data.push(tableData[key])
-        if (key === 'formID') {
+        if (key === 'Form ID') {
             indexOfRequestID = headers.indexOf(key);
         }
     }

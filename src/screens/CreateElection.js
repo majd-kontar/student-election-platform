@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
 import "./CreateElection.css"
 import {useCookies} from "react-cookie";
-import OptionGenerator from "./OptionGenerator";
+import OptionGenerator from "../functions/OptionGenerator";
 import {campuses, clubs, majors} from "../data/data";
 import {submitCreateElectionForm} from "../requests/elections";
 

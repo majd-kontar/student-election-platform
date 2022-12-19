@@ -1,6 +1,6 @@
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"
-import {Route, BrowserRouter as Router, Routes, Redirect, useNavigate} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import Login from "./screens/Login";
 import Elections from "./screens/Elections";
 import Profile from "./screens/Profile";
